@@ -16,43 +16,47 @@ namespace TBoard.WebApi.Controllers
     public class PlayerController : ControllerBase
     {
 
-        private readonly IPlayerService playerService = null;
-        private readonly IMapper mapper;
+        private readonly IPlayerService playerService;
 
-        public PlayerController(IPlayerService pserv, IMapper mapper)
+        public PlayerController(IPlayerService playerService)
         {
-            this.playerService = pserv;
-            this.mapper = mapper;
+            this.playerService = playerService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll([FromQuery]PlayerResourceParameters playerResourceParameters)
+        [HttpGet()]
+        [HttpHead]
+        public ActionResult<IEnumerable<PlayerDto>> GetAll([FromQuery]PlayerResourceParameters playerResourceParameters)
         {
-            var result = playerService.GetAll(playerResourceParameters);
-            return Ok(mapper.Map<IEnumerable<PlayerDto>>(result));
+            return Ok(playerService.GetAll(playerResourceParameters));
         }
 
         [HttpGet("{playerId}")]
-        public ActionResult<Player> GetById(int playerId)
+        public ActionResult<Tournament> GetById(int playerId)
         {
-            var result = playerService.GetById(playerId);
-            if (result == null)
+            if (playerService.GetById(playerId) == null)
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<PlayerDto>(result));
-        }
-
-        [HttpDelete("{id}")]
-        public void DeleteById(int id)
-        {
-            playerService.DeleteById(id);
+            return Ok(playerService.GetById(playerId));
         }
 
         [HttpPost]
-        public void Post(Player entity)
+        public ActionResult<Tournament> CreatePlayer(PlayerDto player)
         {
-            playerService.Post(entity);
+            return Ok(playerService.AddPlayer(player));
+
+        }
+
+        [HttpDelete("{playerId}")]
+        public void DeleteById(int playerId)
+        {
+            playerService.DeleteById(playerId);
+        }
+
+        [HttpPut("{playerId}")]
+        public ActionResult<TournamentDto> UpdatePlayer(PlayerDto player)
+        {
+            return Ok(playerService.Update(player));
         }
     }
 }

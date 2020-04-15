@@ -14,9 +14,7 @@ namespace TBoard.Services
         public TournamentDto GetById(int id);
         public void DeleteById(int id);
         public Tournament AddTournament(TournamentForCreationDto entity);
-
         public TournamentDto Update(TournamentDto entity);
-        bool Exists(int id);
 
     }
 }

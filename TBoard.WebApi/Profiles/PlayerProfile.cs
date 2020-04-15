@@ -14,6 +14,7 @@ namespace TBoard.WebApi.Profiles
         public PlayerProfile()
         {
             CreateMap<Player, PlayerDto>();
+            CreateMap<PlayerDto, Player>();
 
         }
 

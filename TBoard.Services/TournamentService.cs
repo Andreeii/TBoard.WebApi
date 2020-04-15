@@ -16,9 +16,9 @@ namespace TBoard.Services
         private readonly IMapper mapper;
 
 
-        public TournamentService(ITournamentRepository repo,IMapper mapper)
+        public TournamentService(ITournamentRepository tournamentRepository, IMapper mapper)
         {
-            this.tournamentRepository = repo;
+            this.tournamentRepository = tournamentRepository;
             this.mapper = mapper;
 
         }
@@ -66,18 +66,6 @@ namespace TBoard.Services
             tournamentRepository.SaveChanges();
             var tournamentToReturn = mapper.Map<TournamentDto>(tournamentEntity);
             return tournamentToReturn;
-        }
-
-        public bool Exists(int tournamentId)
-        {
-            if (tournamentRepository.Exists(tournamentId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
     }
