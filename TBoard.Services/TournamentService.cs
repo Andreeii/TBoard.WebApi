@@ -1,53 +1,71 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.Repository;
 using TBoard.Repository.ResourceParameters;
+
 
 namespace TBoard.Services
 {
     public class TournamentService : ITournamentService
     {
         private readonly ITournamentRepository tournamentRepository;
+        private readonly IMapper mapper;
 
 
-        public TournamentService(ITournamentRepository repo)
+        public TournamentService(ITournamentRepository repo,IMapper mapper)
         {
             this.tournamentRepository = repo;
+            this.mapper = mapper;
 
         }
         public void DeleteById(int id)
         {
             tournamentRepository.DeleteById(id);
+            tournamentRepository.SaveChanges();
         }
 
-        public IEnumerable<Tournament> GetAll(TournamentResourceParameters tournamentResourceParams)
+        public IEnumerable<TournamentDto> GetAll(TournamentResourceParameters tournamentResourceParameters)
         {
-            if (tournamentResourceParams == null)
+            IEnumerable<Tournament> result;
+            if (tournamentResourceParameters == null)
             {
-                return tournamentRepository.GetAll();
+                result = tournamentRepository.GetAll();
+                return mapper.Map<IEnumerable<TournamentDto>>(result);
             }
             else
             {
-                return tournamentRepository.GetAll(tournamentResourceParams);
+                result = tournamentRepository.GetAll(tournamentResourceParameters);
+                return mapper.Map<IEnumerable<TournamentDto>>(result);
             }
         }
 
-        public Tournament GetById(int id)
+        public TournamentDto GetById(int tournamentId)
         {
-            var result = tournamentRepository.GetById(id);
-            return result;
+            var result = tournamentRepository.GetById(tournamentId);
+            return mapper.Map<TournamentDto>(result);
         }
 
-        public void AddTournament(Tournament entity)
+        public Tournament AddTournament(TournamentForCreationDto tournament)
         {
-            tournamentRepository.Add(entity);
+            var tournamentEntity = mapper.Map<Tournament>(tournament);
+            tournamentRepository.Add(tournamentEntity);
+            tournamentRepository.SaveChanges();
+            var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
+            return tournamentToReturn;
+
         }
 
-        public void Update(Tournament entity)
+        public TournamentDto Update(TournamentDto tournament)
         {
-            tournamentRepository.Update(entity);
+            var tournamentEntity = mapper.Map<Tournament>(tournament);
+            tournamentRepository.Update(tournamentEntity);
+            tournamentRepository.SaveChanges();
+            var tournamentToReturn = mapper.Map<TournamentDto>(tournamentEntity);
+            return tournamentToReturn;
         }
 
         public bool Exists(int tournamentId)
@@ -61,9 +79,6 @@ namespace TBoard.Services
                 return false;
             }
         }
-        public void SaveChanges()
-        {
-            tournamentRepository.SaveChanges();
-        }
+
     }
 }

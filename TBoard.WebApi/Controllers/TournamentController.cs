@@ -16,11 +16,9 @@ namespace TBoard.WebApi.Controllers
     public class TournamentController : ControllerBase
     {
         private readonly ITournamentService tournamentService;
-        private readonly IMapper mapper;
-        public TournamentController(ITournamentService tournamentService, IMapper mapper)
+        public TournamentController(ITournamentService tournamentService)
         {
             this.tournamentService = tournamentService;
-            this.mapper = mapper;
         }
 
         [HttpGet()]
@@ -28,48 +26,36 @@ namespace TBoard.WebApi.Controllers
         public ActionResult<IEnumerable<TournamentDto>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
         {
             //throw new Exception("Test Exception");
-            var result = tournamentService.GetAll(tournamentResourceParameters);
-            return Ok(mapper.Map<IEnumerable<TournamentDto>>(result));
+            return Ok(tournamentService.GetAll(tournamentResourceParameters));
         }
 
         [HttpGet("{tournamentId}")]
         public ActionResult<Tournament> GetById(int tournamentId)
         {
-            var result = tournamentService.GetById(tournamentId);
-            if (result == null)
+            if (tournamentService.GetById(tournamentId) == null)
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<TournamentDto>(result));
+            return Ok(tournamentService.GetById(tournamentId));
         }
 
         [HttpDelete("{tournamentId}")]
         public void DeleteById(int tournamentId)
         {
-            tournamentService.DeleteById(tournamentId);
-            tournamentService.SaveChanges();
+          tournamentService.DeleteById(tournamentId);
         }
 
         [HttpPost]
-        public ActionResult<TournamentDto> CreateTournament(TournamentForCreationDto tournament)
+        public ActionResult<Tournament> CreateTournament(TournamentForCreationDto tournament)
         {
-
-            var tournamentEntity = mapper.Map<Tournament>(tournament);
-            tournamentService.AddTournament(tournamentEntity);
-            tournamentService.SaveChanges();
-            var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
-            return Ok(tournamentToReturn);
+            return Ok(tournamentService.AddTournament(tournament));
 
         }
 
         [HttpPut("{tournamentId}")]
-        public ActionResult UpdateTournament(TournamentDto tournament)
+        public ActionResult<TournamentDto> UpdateTournament(TournamentDto tournament)
         {
-            var tournamentEntity = mapper.Map<Tournament>(tournament);
-            tournamentService.Update(tournamentEntity);
-            tournamentService.SaveChanges();
-            var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
-            return Ok(tournamentToReturn);
+            return Ok(tournamentService.Update(tournament));
         }
 
     }

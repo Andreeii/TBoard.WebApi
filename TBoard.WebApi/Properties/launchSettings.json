@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "tournaments",
+      "launchUrl": "players",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "TBoard.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "tournaments",
+      "launchUrl": "players",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
