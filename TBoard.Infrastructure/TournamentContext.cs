@@ -256,7 +256,7 @@ namespace TBoard.Infrastructure
                 Id = 5,
                 PlayerId = 1,
                 GameId = 3,
-                IsWinner = false
+                IsWinner = true
             };
 
             var playerGame6 = new PlayerGame()
@@ -264,7 +264,7 @@ namespace TBoard.Infrastructure
                 Id = 6,
                 PlayerId = 4,
                 GameId = 3,
-                IsWinner = true
+                IsWinner = false
             };
             var playerGame7 = new PlayerGame()
             {
@@ -342,7 +342,7 @@ namespace TBoard.Infrastructure
                 Id = 17,
                 PlayerId = 1,
                 GameId = 9,
-                IsWinner = false
+                IsWinner = true
             };
 
             var playerGame18 = new PlayerGame()
@@ -350,7 +350,7 @@ namespace TBoard.Infrastructure
                 Id = 18,
                 PlayerId = 4,
                 GameId = 9,
-                IsWinner = true
+                IsWinner = false
             };
             var playerGame19 = new PlayerGame()
             {

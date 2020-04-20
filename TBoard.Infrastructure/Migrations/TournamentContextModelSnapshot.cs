@@ -254,14 +254,14 @@ namespace TBoard.Infrastructure.Migrations
                         {
                             Id = 5,
                             GameId = 3,
-                            IsWinner = false,
+                            IsWinner = true,
                             PlayerId = 1
                         },
                         new
                         {
                             Id = 6,
                             GameId = 3,
-                            IsWinner = true,
+                            IsWinner = false,
                             PlayerId = 4
                         },
                         new
@@ -338,14 +338,14 @@ namespace TBoard.Infrastructure.Migrations
                         {
                             Id = 17,
                             GameId = 9,
-                            IsWinner = false,
+                            IsWinner = true,
                             PlayerId = 1
                         },
                         new
                         {
                             Id = 18,
                             GameId = 9,
-                            IsWinner = true,
+                            IsWinner = false,
                             PlayerId = 4
                         },
                         new

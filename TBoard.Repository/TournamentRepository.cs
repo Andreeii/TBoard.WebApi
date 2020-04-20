@@ -14,6 +14,9 @@ namespace TBoard.Repository
         protected readonly TournamentContext tournamentContext;
 
         protected DbSet<Tournament> table;
+        protected DbSet<Game> gtable;
+        protected DbSet<Player> ptable;
+        protected DbSet<PlayerGame> pgtable;
 
         public TournamentRepository(TournamentContext context)
         {
@@ -35,6 +38,15 @@ namespace TBoard.Repository
             Tournament existing = table.Find(id);
             table.Remove(existing);
         }
+
+        //public Player GetTournamentWinner(int tournamentId)
+        //{
+        //    var result = table.Where(x => x.TournamentId == tournamentId)
+        //        .Include(x => x.Game)
+        //        .ThenInclude(x => x))
+        //        .FirstOrDefault();
+          
+        //}
 
         public bool Exists(int id)
         {
