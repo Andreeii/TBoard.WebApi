@@ -6,7 +6,7 @@ namespace TBoard.Entities
 {
   public  class Tournament
     {
-        public int Id { get; set; }
+        public int TournamentId { get; set; }
         public string Name { get; set; }
 
         public DateTime CreationDate { get; set; }

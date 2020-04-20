@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using TBoard.Infrastructure;
+using TBoard.Infrastructure.Middlewares;
 using TBoard.Repository;
 using TBoard.Services;
+using TBoard.WebApi.Extensions;
 
 namespace TBoard.WebApi
 {
@@ -30,7 +32,7 @@ namespace TBoard.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("Cors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            //services.AddCors(options => options.AddPolicy("Cors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
@@ -51,6 +53,12 @@ namespace TBoard.WebApi
                         Version = "1"
                     });
             });
+            //var authOptions = services.ConfigureAuthOptions(Configuration);
+            //services.AddJwtAuthentication(authOptions);
+            //services.AddControllers(options =>
+            //{
+            //    options.Filters.Add(new AuthorizeFilter());
+            //});
 
         }
 
@@ -63,22 +71,16 @@ namespace TBoard.WebApi
             }
             else
             {
-                app.UseExceptionHandler(appBuilder =>
-                {
-                    appBuilder.Run(async context =>
-                    {
-                        context.Response.StatusCode = 500;
-                        await context.Response.WriteAsync("An unexpected fault happened.Try again...");
-                    });
-                });
+                app.UseMiddleware<ErrorHandlingMiddleware>();
             }
             app.UseHttpsRedirection();
             app.UseSwagger();
-            app.UseCors("Cors");
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
+            app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

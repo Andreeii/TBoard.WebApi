@@ -12,15 +12,15 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "players",
+      "launchUrl": "api/player",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
     "TBoard.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "players",
+      "launchUrl": "api/player",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

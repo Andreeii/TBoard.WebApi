@@ -6,7 +6,7 @@ namespace TBoard.Dto
 {
    public class TournamentDto
     {
-        public int Id { get; set; }
+        public int TournamentId { get; set; }
         public string Name { get; set; }
 
         public DateTime CreationDate { get; set; }

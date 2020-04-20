@@ -11,7 +11,7 @@ using TBoard.Services;
 namespace TBoard.WebApi.Controllers
 {
     [ApiController]
-    [Route("tournaments/{tournamentId}/games")]
+    [Route("api/tournament/{tournamentId}/[controller]")]
     public class GameController : ControllerBase
     {
 
