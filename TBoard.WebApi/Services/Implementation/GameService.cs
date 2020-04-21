@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using TBoard.Entities;
-using TBoard.Repository;
+using TBoard.WebApi.Repositories.Interfaces;
+using TBoard.WebApi.Services.Interfaces;
 
-namespace TBoard.Services
+namespace TBoard.WebApi.Services.Implementation
 {
     public class GameService : IGameService
     {

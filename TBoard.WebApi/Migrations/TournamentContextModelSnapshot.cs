@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TBoard.Infrastructure;
+using TBoard.WebApi;
 
-namespace TBoard.Infrastructure.Migrations
+namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
     partial class TournamentContextModelSnapshot : ModelSnapshot

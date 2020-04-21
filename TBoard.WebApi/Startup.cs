@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TBoard.Infrastructure;
 using TBoard.Infrastructure.Middlewares;
-using TBoard.Repository;
-using TBoard.Services;
-using TBoard.WebApi.Extensions;
+using TBoard.WebApi.Repositories.Implementation;
+using TBoard.WebApi.Repositories.Interfaces;
+using TBoard.WebApi.Services.Implementation;
+using TBoard.WebApi.Services.Interfaces;
 
 namespace TBoard.WebApi
 {

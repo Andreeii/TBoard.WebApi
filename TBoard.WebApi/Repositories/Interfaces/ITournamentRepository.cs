@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 using TBoard.Entities;
-using TBoard.Repository.ResourceParameters;
+using TBoard.WebApi.ResourceParameters;
 
-namespace TBoard.Repository
+namespace TBoard.WebApi.Repositories.Interfaces
 {
     public interface ITournamentRepository
     {

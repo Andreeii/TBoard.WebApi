@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TBoard.Infrastructure;
+using TBoard.WebApi;
 
-namespace TBoard.Infrastructure.Migrations
+namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200420172144_FirstMigration")]
+    [Migration("20200420185429_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

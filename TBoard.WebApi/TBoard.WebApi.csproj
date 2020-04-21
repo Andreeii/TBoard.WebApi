@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TBoard.Dto\TBoard.Dto.csproj" />
     <ProjectReference Include="..\TBoard.Infrastructure\TBoard.Infrastructure.csproj" />
-    <ProjectReference Include="..\TBoard.Services\TBoard.Services.csproj" />
   </ItemGroup>
 
 

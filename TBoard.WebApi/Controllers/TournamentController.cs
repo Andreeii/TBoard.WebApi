@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
-using TBoard.Repository.ResourceParameters;
-using TBoard.Services;
+using TBoard.WebApi.ResourceParameters;
+using TBoard.WebApi.Services.Implementation;
 
 namespace TBoard.WebApi.Controllers
 {

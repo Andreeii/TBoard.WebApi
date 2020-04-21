@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TBoard.Infrastructure.Migrations
+namespace TBoard.WebApi.Migrations
 {
     public partial class FirstMigration : Migration
     {

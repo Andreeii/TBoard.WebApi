@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
-using TBoard.Services;
+using TBoard.WebApi.Services.Interfaces;
 
 namespace TBoard.WebApi.Controllers
 {

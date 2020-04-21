@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 using TBoard.Entities;
 
-namespace TBoard.Infrastructure
+namespace TBoard.WebApi
 {
     public partial class TournamentContext : DbContext
     {
@@ -108,7 +109,7 @@ namespace TBoard.Infrastructure
             SeedData(modelBuilder);
         }
 
-        private static void SeedData (ModelBuilder modelBuilder)
+        private static void SeedData(ModelBuilder modelBuilder)
         {
             var tournament1 = new Tournament()
             {
@@ -409,8 +410,8 @@ namespace TBoard.Infrastructure
                 .HasData(tournament1, tournament2);
             modelBuilder.Entity<Game>()
                 .HasData(
-                game1,game2,game3,game4,game5,game6,
-                game7,game8,game9,game10,game11,game12
+                game1, game2, game3, game4, game5, game6,
+                game7, game8, game9, game10, game11, game12
                 );
             modelBuilder.Entity<Player>()
                 .HasData(player1, player2, player3, player4);
@@ -425,3 +426,5 @@ namespace TBoard.Infrastructure
         }
     }
 }
+
+
