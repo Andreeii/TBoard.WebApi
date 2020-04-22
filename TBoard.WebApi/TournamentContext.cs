@@ -1,13 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Entities;
+using TBoard.Entities.Auth;
+using TBoard.WebApi.Schemas;
 
 namespace TBoard.WebApi
 {
-    public partial class TournamentContext : DbContext
+    public partial class TournamentContext : IdentityDbContext<Player, Role, int, UserClaim, PlayerRole, UserLogin, RoleClaim, UserToken>
     {
         public TournamentContext()
         {
@@ -21,11 +24,13 @@ namespace TBoard.WebApi
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<Player> Player { get; set; }
         public virtual DbSet<PlayerGame> PlayerGame { get; set; }
-        public virtual DbSet<PlayerRole> PlayerRole { get; set; }
+        //public virtual DbSet<PlayerRole> PlayerRole { get; set; }
         public virtual DbSet<Tournament> Tournament { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Game>(entity =>
             {
 
@@ -37,16 +42,16 @@ namespace TBoard.WebApi
 
             modelBuilder.Entity<Player>(entity =>
             {
-                entity.HasIndex(e => e.Gmail)
-                    .IsUnique();
+                //    entity.HasIndex(e => e.Gmail)
+                //        .IsUnique();
 
 
-                entity.HasIndex(e => e.UserName)
-                    .IsUnique();
+                //entity.HasIndex(e => e.UserName)
+                //    .IsUnique();
 
-                entity.Property(e => e.Gmail)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                //entity.Property(e => e.Gmail)
+                //    .IsRequired()
+                //    .HasMaxLength(50);
 
                 entity.Property(e => e.Name)
                    .IsRequired()
@@ -56,22 +61,22 @@ namespace TBoard.WebApi
                   .IsRequired()
                   .HasMaxLength(50);
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                //entity.Property(e => e.Password)
+                //    .IsRequired()
+                //    .HasMaxLength(50);
 
                 entity.Property(e => e.RegistrationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.UserName)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                //entity.Property(e => e.UserName)
+                //    .IsRequired()
+                //    .HasMaxLength(50);
 
-                entity.HasOne(d => d.PlayerRoleNavigation)
-                    .WithMany(p => p.Player)
-                    .HasForeignKey(d => d.PlayerRole)
-                    .OnDelete(DeleteBehavior.SetNull);
+                //entity.HasOne(d => d.PlayerRoleNavigation)
+                //    .WithMany(p => p.Player)
+                //    .HasForeignKey(d => d.PlayerRole)
+                //    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<PlayerGame>(entity =>
@@ -89,12 +94,12 @@ namespace TBoard.WebApi
                     .OnDelete(DeleteBehavior.SetNull);
             });
 
-            modelBuilder.Entity<PlayerRole>(entity =>
-            {
-                entity.ToTable("Player_Role");
+            //modelBuilder.Entity<PlayerRole>(entity =>
+            //{
+            //    entity.ToTable("Player_Role");
 
-                entity.Property(e => e.Role).HasMaxLength(50);
-            });
+            //    entity.Property(e => e.Role).HasMaxLength(50);
+            //});
 
             modelBuilder.Entity<Tournament>(entity =>
             {
@@ -105,10 +110,19 @@ namespace TBoard.WebApi
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
             });
-
+            ApplyIdentityMapConfiguration(modelBuilder);
             SeedData(modelBuilder);
         }
-
+        private void ApplyIdentityMapConfiguration(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Player>().ToTable("Players", SchemaConsts.Auth);
+            modelBuilder.Entity<UserClaim>().ToTable("UserClaims", SchemaConsts.Auth);
+            modelBuilder.Entity<UserLogin>().ToTable("UserLogins", SchemaConsts.Auth);
+            modelBuilder.Entity<UserToken>().ToTable("UserRoles", SchemaConsts.Auth);
+            modelBuilder.Entity<Role>().ToTable("Roles", SchemaConsts.Auth);
+            modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims", SchemaConsts.Auth);
+            modelBuilder.Entity<PlayerRole>().ToTable("PlayerRole", SchemaConsts.Auth);
+        }
         private static void SeedData(ModelBuilder modelBuilder)
         {
             var tournament1 = new Tournament()
@@ -126,43 +140,39 @@ namespace TBoard.WebApi
             };
             var player1 = new Player()
             {
-                PlayerId = 1,
+                Id = 1,
                 Name = "aaa",
                 Surname = "aaa",
                 UserName = "a1",
-                Password = "admin",
-                Gmail = "aaa@gmail.com",
-                PlayerRole = 1
+                PasswordHash = "admin",
+                Email = "aaa@gmail.com"
             };
             var player2 = new Player()
             {
-                PlayerId = 2,
+                Id =2,
                 Name = "bbb",
                 Surname = "bbb",
                 UserName = "b1",
-                Password = "admin",
-                Gmail = "bbb@gmail.com",
-                PlayerRole = 1
+                PasswordHash = "admin",
+                Email = "bbb@gmail.com"
             };
             var player3 = new Player()
             {
-                PlayerId = 3,
+                Id =3,
                 Name = "ccc",
                 Surname = "ccc",
                 UserName = "c1",
-                Password = "user",
-                Gmail = "ccc@gmail.com",
-                PlayerRole = 2
+                PasswordHash = "user",
+                Email = "ccc@gmail.com"
             };
             var player4 = new Player()
             {
-                PlayerId = 4,
+                Id =4,
                 Name = "ddd",
                 Surname = "ddd",
                 UserName = "d1",
-                Password = "user",
-                Gmail = "ddd@gmail.com",
-                PlayerRole = 2
+                PasswordHash = "user",
+                Email = "ddd@gmail.com"
             };
             var game1 = new Game
             {
@@ -395,16 +405,16 @@ namespace TBoard.WebApi
                 GameId = 12,
                 IsWinner = false
             };
-            var admin = new PlayerRole()
-            {
-                RoleId = 1,
-                Role = "admin"
-            };
-            var player = new PlayerRole()
-            {
-                RoleId = 2,
-                Role = "user"
-            };
+            //var admin = new PlayerRole()
+            //{
+            //    RoleId = 1,
+            //    Role = "admin"
+            //};
+            //var player = new PlayerRole()
+            //{
+            //    RoleId = 2,
+            //    Role = "user"
+            //};
 
             modelBuilder.Entity<Tournament>()
                 .HasData(tournament1, tournament2);
@@ -421,8 +431,8 @@ namespace TBoard.WebApi
                          playerGame11, playerGame12, playerGame13, playerGame14,
                          playerGame15, playerGame16, playerGame17, playerGame18, playerGame19,
                          playerGame20, playerGame21, playerGame22, playerGame23, playerGame24);
-            modelBuilder.Entity<PlayerRole>()
-                .HasData(admin, player);
+            //modelBuilder.Entity<PlayerRole>()
+            //    .HasData(admin, player);
         }
     }
 }

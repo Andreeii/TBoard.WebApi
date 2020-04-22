@@ -12,7 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TBoard.Entities;
+using TBoard.Entities.Auth;
 using TBoard.Infrastructure.Middlewares;
+using TBoard.WebApi.Extensions;
 using TBoard.WebApi.Repositories.Implementation;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.Services.Implementation;
@@ -32,13 +35,27 @@ namespace TBoard.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors(options => options.AddPolicy("Cors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<TournamentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<Player, Role>(options =>
+            {
+                options.Password.RequiredLength = 5;
+            })
+           .AddEntityFrameworkStores<TournamentContext>();
+
+            var authOptions = services.ConfigureAuthOptions(Configuration);
+            services.AddJwtAuthentication(authOptions);
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter());
+            });
+
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(ITournamentRepository), typeof(TournamentRepository));
             services.AddScoped(typeof(IPlayerRepository), typeof(PlayerRepository));
@@ -53,12 +70,6 @@ namespace TBoard.WebApi
                         Version = "1"
                     });
             });
-            //var authOptions = services.ConfigureAuthOptions(Configuration);
-            //services.AddJwtAuthentication(authOptions);
-            //services.AddControllers(options =>
-            //{
-            //    options.Filters.Add(new AuthorizeFilter());
-            //});
 
         }
 
@@ -77,8 +88,8 @@ namespace TBoard.WebApi
             app.UseSwagger();
             app.UseRouting();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseEndpoints(endpoints =>

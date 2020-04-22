@@ -10,8 +10,8 @@ using TBoard.WebApi;
 namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200420185429_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20200422092906_IdentityMigration")]
+    partial class IdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,136 @@ namespace TBoard.WebApi.Migrations
                 .HasAnnotation("ProductVersion", "5.0.0-preview.2.20159.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("PlayerRole","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.RoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaims","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaims","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserToken", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserRoles","Auth");
+                });
 
             modelBuilder.Entity("TBoard.Entities.Game", b =>
                 {
@@ -102,99 +232,148 @@ namespace TBoard.WebApi.Migrations
 
             modelBuilder.Entity("TBoard.Entities.Player", b =>
                 {
-                    b.Property<int>("PlayerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Gmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
-                    b.Property<int?>("PlayerRole")
-                        .HasColumnType("int");
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
-                    b.HasKey("PlayerId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("Gmail")
-                        .IsUnique();
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
 
-                    b.HasIndex("PlayerRole");
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserName")
-                        .IsUnique();
-
-                    b.ToTable("Player");
+                    b.ToTable("Players","Auth");
 
                     b.HasData(
                         new
                         {
-                            PlayerId = 1,
-                            Gmail = "aaa@gmail.com",
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e819b4fd-d855-49ce-bec7-b6fb14e29950",
+                            Email = "aaa@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
                             Name = "aaa",
-                            Password = "admin",
-                            PlayerRole = 1,
+                            PasswordHash = "admin",
+                            PhoneNumberConfirmed = false,
                             RegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "aaa",
+                            TwoFactorEnabled = false,
                             UserName = "a1"
                         },
                         new
                         {
-                            PlayerId = 2,
-                            Gmail = "bbb@gmail.com",
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bbe50a19-15b6-46ce-83dd-5b910b3f017f",
+                            Email = "bbb@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
                             Name = "bbb",
-                            Password = "admin",
-                            PlayerRole = 1,
+                            PasswordHash = "admin",
+                            PhoneNumberConfirmed = false,
                             RegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "bbb",
+                            TwoFactorEnabled = false,
                             UserName = "b1"
                         },
                         new
                         {
-                            PlayerId = 3,
-                            Gmail = "ccc@gmail.com",
+                            Id = 3,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6db62e9b-e33b-468b-961d-0d1aefe3de29",
+                            Email = "ccc@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
                             Name = "ccc",
-                            Password = "user",
-                            PlayerRole = 2,
+                            PasswordHash = "user",
+                            PhoneNumberConfirmed = false,
                             RegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "ccc",
+                            TwoFactorEnabled = false,
                             UserName = "c1"
                         },
                         new
                         {
-                            PlayerId = 4,
-                            Gmail = "ddd@gmail.com",
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "cc8cb57b-3808-406b-a375-1e9e98d1bf3e",
+                            Email = "ddd@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
                             Name = "ddd",
-                            Password = "user",
-                            PlayerRole = 2,
+                            PasswordHash = "user",
+                            PhoneNumberConfirmed = false,
                             RegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "ddd",
+                            TwoFactorEnabled = false,
                             UserName = "d1"
                         });
                 });
@@ -394,34 +573,6 @@ namespace TBoard.WebApi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TBoard.Entities.PlayerRole", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Player_Role");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            Role = "admin"
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            Role = "user"
-                        });
-                });
-
             modelBuilder.Entity("TBoard.Entities.Tournament", b =>
                 {
                     b.Property<int>("TournamentId")
@@ -458,6 +609,57 @@ namespace TBoard.WebApi.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerRole", b =>
+                {
+                    b.HasOne("TBoard.Entities.Auth.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.RoleClaim", b =>
+                {
+                    b.HasOne("TBoard.Entities.Auth.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserClaim", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserLogin", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.UserToken", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TBoard.Entities.Game", b =>
                 {
                     b.HasOne("TBoard.Entities.Tournament", "Tournament")
@@ -465,14 +667,6 @@ namespace TBoard.WebApi.Migrations
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Player", b =>
-                {
-                    b.HasOne("TBoard.Entities.PlayerRole", "PlayerRoleNavigation")
-                        .WithMany("Player")
-                        .HasForeignKey("PlayerRole")
-                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("TBoard.Entities.PlayerGame", b =>
