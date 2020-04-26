@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TBoard.Dto
 {
-    public class UserForLoginDto
+    public class PlayerForLoginDto
     {
         [Required]
         public string Username { get; set; }

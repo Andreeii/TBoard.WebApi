@@ -41,7 +41,7 @@ namespace TBoard.Infrastructure.Middlewares
             return context.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error. Please contact the development team"
+                Message = "Server Error. Interns from Amdaris allready working on your problem"
             }.ToString());
         }
     }

@@ -14,9 +14,6 @@ namespace TBoard.WebApi.Repositories.Implementation
         protected readonly TournamentContext tournamentContext;
 
         protected DbSet<Tournament> table;
-        protected DbSet<Game> gtable;
-        protected DbSet<Player> ptable;
-        protected DbSet<PlayerGame> pgtable;
 
         public TournamentRepository(TournamentContext context)
         {

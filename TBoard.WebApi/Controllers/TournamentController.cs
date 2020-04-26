@@ -49,7 +49,6 @@ namespace TBoard.WebApi.Controllers
         public ActionResult<Tournament> CreateTournament(TournamentForCreationDto tournament)
         {
             return Ok(tournamentService.AddTournament(tournament));
-
         }
 
         [HttpPut("{tournamentId}")]

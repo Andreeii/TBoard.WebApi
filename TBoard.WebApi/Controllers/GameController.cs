@@ -16,55 +16,57 @@ namespace TBoard.WebApi.Controllers
     {
 
         private readonly IGameService gameService;
-        private readonly IMapper mapper;
-        public GameController(IGameService gameService, IMapper mapper)
+        public GameController(IGameService gameService)
         {
             this.gameService = gameService;
-            this.mapper = mapper;
         }
 
         [HttpGet()]
         public ActionResult<IEnumerable<GameDto>> GetAll(int tournamentId)
         {
-            if (!gameService.Exists(tournamentId))
+            if (!gameService.TournamentExists(tournamentId))
             {
                 return NotFound();
             }
             var result = gameService.GetByTournamentId(tournamentId);
-            return Ok(mapper.Map<IEnumerable<GameDto>>(result));
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("{gameId}")]
+        public IActionResult GetById(int GameId)
         {
-            var result = gameService.GetById(id);
+            var result = gameService.GetById(GameId);
             if (result == null)
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<GameDto>(result));
+            return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public void DeleteById(int id)
+        [HttpDelete("{gameId}")]
+        public ActionResult DeleteById(int GameId)
         {
-            gameService.DeleteById(id);
+        
+                if (!gameService.GameExists(GameId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    gameService.DeleteById(GameId);
+                    return Ok();
+                }
         }
-
+        //to do 
         [HttpPost]
-        public ActionResult<GameDto> CreateGameForTournament(int tournamnetId, GameForCreationDto game)
+        public ActionResult<GameDto> CreateGameForTournament(GameForCreationDto game)
         {
-            if (!gameService.Exists(tournamnetId))
+            if (!gameService.TournamentExists(game.TournamentId))
             {
                 return NotFound();
             }
-            var gameEntity = mapper.Map<Game>(game);
-            gameService.Post(gameEntity);
-            gameService.SaveChanges();
-
-            var gameToReturn = mapper.Map<GameDto>(gameEntity);
-
-            return gameToReturn;
+           // var result = new GameForCreationDto { TournamentId = tournamnetId };
+            return gameService.Post(game);
         }
     }
 }

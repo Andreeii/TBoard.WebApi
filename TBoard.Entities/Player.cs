@@ -8,12 +8,8 @@ namespace TBoard.Entities
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        //public string Password { get; set; }
-        //public string Gmail { get; set; }
-        public DateTime RegistrationDate { get; set; }
-        //public int? PlayerRole { get; set; }
 
-        //public virtual PlayerRole PlayerRoleNavigation { get; set; }
+        public DateTime RegistrationDate { get; set; }
         public virtual ICollection<PlayerGame> PlayerGame { get; set; }
     }
 }

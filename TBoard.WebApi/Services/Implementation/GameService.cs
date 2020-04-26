@@ -1,7 +1,9 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.Services.Interfaces;
@@ -10,45 +12,61 @@ namespace TBoard.WebApi.Services.Implementation
 {
     public class GameService : IGameService
     {
-        private readonly IRepository<Game> gameRepository;
+        private readonly IGameRepository gameRepository;
         private readonly ITournamentRepository tournamentRepository;
+        private readonly IMapper mapper;
 
-        public GameService(IRepository<Game> gameRepository, ITournamentRepository tournamentRepository)
+        public GameService(IGameRepository gameRepository, ITournamentRepository tournamentRepository,IMapper mapper)
         {
             this.gameRepository = gameRepository;
             this.tournamentRepository = tournamentRepository;
+            this.mapper = mapper;
         }
         public void DeleteById(int id)
         {
             gameRepository.DeleteById(id);
+            gameRepository.SaveChanges();
         }
 
-        public IList<Game> GetByTournamentId(int tournamentId)
+        public IEnumerable<GameDto> GetByTournamentId(int tournamentId)
         {
-            return gameRepository.GetAll()
-                .Where(x => x.TournamentId == tournamentId)
-                .ToList();
-        }
+           var result = gameRepository.GetByTournamentId(tournamentId);
+            return mapper.Map<IEnumerable<GameDto>>(result);
 
-        public Game GetById(int id)
+        }
+        public GameDto GetById(int id)
         {
             var result = gameRepository.GetById(id);
-            return result;
+            return (mapper.Map<GameDto>(result)); ;
         }
 
-        public void Post(Game entity)
+        public GameDto Post(GameForCreationDto game)
         {
-            gameRepository.Add(entity);
+
+            var gameEntity = mapper.Map<Game>(game);
+            gameRepository.Post(gameEntity);
+            gameRepository.SaveChanges();
+            var gameToReturn = mapper.Map<GameDto>(gameEntity);
+
+            return gameToReturn;
         }
 
         public void Update(Game entity)
         {
-            gameRepository.Add(entity);
+            gameRepository.Update(entity);
         }
 
-        public bool Exists(int id)
+        public bool TournamentExists(int id)
         {
             if (tournamentRepository.Exists(id) == true)
+                return true;
+            else
+                return false;
+        }
+
+        public bool GameExists(int id)
+        {
+            if (gameRepository.GameExists(id) == true)
                 return true;
             else
                 return false;

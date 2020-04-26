@@ -31,8 +31,6 @@ namespace TBoard.WebApi
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(setupAction =>
@@ -50,13 +48,14 @@ namespace TBoard.WebApi
 
             var authOptions = services.ConfigureAuthOptions(Configuration);
             services.AddJwtAuthentication(authOptions);
-            services.AddControllers(options =>
-            {
-                options.Filters.Add(new AuthorizeFilter());
-            });
+            //services.AddControllers(options =>
+            //{
+            //    options.Filters.Add(new AuthorizeFilter());
+            //});
 
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IGameRepository), typeof(GameRepository));
             services.AddScoped(typeof(ITournamentRepository), typeof(TournamentRepository));
             services.AddScoped(typeof(IPlayerRepository), typeof(PlayerRepository));
             services.AddTransient<ITournamentService, TournamentService>();
@@ -73,7 +72,6 @@ namespace TBoard.WebApi
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
