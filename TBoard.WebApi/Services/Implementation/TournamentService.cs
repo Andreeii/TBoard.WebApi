@@ -30,6 +30,8 @@ namespace TBoard.WebApi.Services.Implementation
 
         public IEnumerable<TournamentDto> GetAll(TournamentResourceParameters tournamentResourceParameters)
         {
+            tournamentRepository.GetTournamentWinner();
+
             IEnumerable<Tournament> result;
             if (tournamentResourceParameters == null)
             {

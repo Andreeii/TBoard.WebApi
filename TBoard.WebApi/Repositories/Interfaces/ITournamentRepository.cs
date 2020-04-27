@@ -12,6 +12,8 @@ namespace TBoard.WebApi.Repositories.Interfaces
         //find objects
         Tournament GetById(int id);
 
+        void GetTournamentWinner();
+
         //add objects
         void Add(Tournament entity);
 

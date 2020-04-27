@@ -36,14 +36,34 @@ namespace TBoard.WebApi.Repositories.Implementation
             table.Remove(existing);
         }
 
-        //public Player GetTournamentWinner(int tournamentId)
-        //{
-        //    var result = table.Where(x => x.TournamentId == tournamentId)
-        //        .Include(x => x.Game)
-        //        .ThenInclude(x => x))
-        //        .FirstOrDefault();
+        public void GetTournamentWinner()
+        {
 
-        //}
+            var q1 = tournamentContext.PlayerGame
+                .Where(x => x.IsWinner == true)
+                .GroupBy(x => new { x.PlayerId, x.Game.TournamentId })
+                .Select(x => new
+                {
+                    PlayerId = x.Key.PlayerId,
+                    TournamentId = x.Key.TournamentId,
+                    Wins = x.Count()
+
+                });
+
+            var q2 = tournamentContext.PlayerGame
+          .Where(x => x.IsWinner == true)
+          .GroupBy(x => new { x.PlayerId, x.Game.TournamentId, x.Game.Tournament.Name, x.Player.UserName })
+          .Select(x => new
+          {
+              PlayerId = x.Key.PlayerId,
+              TournamentId = x.Key.TournamentId,
+              Wins = x.Count(),
+              UsernName = x.Key.UserName,
+              TournamentName = x.Key.Name
+
+          })
+          .Where(x => x.Wins == q1.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins)).ToList();
+        }
 
         public bool Exists(int id)
         {

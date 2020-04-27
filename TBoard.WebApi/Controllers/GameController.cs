@@ -11,7 +11,7 @@ using TBoard.WebApi.Services.Interfaces;
 namespace TBoard.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/tournament/{tournamentId}/[controller]")]
+    [Route("api/[controller]")]
     public class GameController : ControllerBase
     {
 
@@ -46,16 +46,16 @@ namespace TBoard.WebApi.Controllers
         [HttpDelete("{gameId}")]
         public ActionResult DeleteById(int GameId)
         {
-        
-                if (!gameService.GameExists(GameId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    gameService.DeleteById(GameId);
-                    return Ok();
-                }
+
+            if (!gameService.GameExists(GameId))
+            {
+                return NotFound();
+            }
+            else
+            {
+                gameService.DeleteById(GameId);
+                return Ok();
+            }
         }
         //to do 
         [HttpPost]
@@ -65,7 +65,6 @@ namespace TBoard.WebApi.Controllers
             {
                 return NotFound();
             }
-           // var result = new GameForCreationDto { TournamentId = tournamnetId };
             return gameService.Post(game);
         }
     }
