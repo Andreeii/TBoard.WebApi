@@ -24,7 +24,6 @@ namespace TBoard.WebApi
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<Player> Player { get; set; }
         public virtual DbSet<PlayerGame> PlayerGame { get; set; }
-        //public virtual DbSet<PlayerRole> PlayerRole { get; set; }
         public virtual DbSet<Tournament> Tournament { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +32,7 @@ namespace TBoard.WebApi
 
             modelBuilder.Entity<Game>(entity =>
             {
-
+               
                 entity.HasOne(d => d.Tournament)
                     .WithMany(p => p.Game)
                     .HasForeignKey(d => d.TournamentId)
@@ -42,16 +41,6 @@ namespace TBoard.WebApi
 
             modelBuilder.Entity<Player>(entity =>
             {
-                //    entity.HasIndex(e => e.Gmail)
-                //        .IsUnique();
-
-
-                //entity.HasIndex(e => e.UserName)
-                //    .IsUnique();
-
-                //entity.Property(e => e.Gmail)
-                //    .IsRequired()
-                //    .HasMaxLength(50);
 
                 entity.Property(e => e.Name)
                    .IsRequired()
@@ -61,22 +50,9 @@ namespace TBoard.WebApi
                   .IsRequired()
                   .HasMaxLength(50);
 
-                //entity.Property(e => e.Password)
-                //    .IsRequired()
-                //    .HasMaxLength(50);
-
                 entity.Property(e => e.RegistrationDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
-
-                //entity.Property(e => e.UserName)
-                //    .IsRequired()
-                //    .HasMaxLength(50);
-
-                //entity.HasOne(d => d.PlayerRoleNavigation)
-                //    .WithMany(p => p.Player)
-                //    .HasForeignKey(d => d.PlayerRole)
-                //    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<PlayerGame>(entity =>
@@ -94,13 +70,6 @@ namespace TBoard.WebApi
                     .OnDelete(DeleteBehavior.SetNull);
             });
 
-            //modelBuilder.Entity<PlayerRole>(entity =>
-            //{
-            //    entity.ToTable("Player_Role");
-
-            //    entity.Property(e => e.Role).HasMaxLength(50);
-            //});
-
             modelBuilder.Entity<Tournament>(entity =>
             {
                 entity.Property(e => e.Name)
@@ -110,6 +79,8 @@ namespace TBoard.WebApi
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
             });
+
+
             ApplyIdentityMapConfiguration(modelBuilder);
             SeedData(modelBuilder);
         }
@@ -129,8 +100,6 @@ namespace TBoard.WebApi
             {
                 TournamentId = 1,
                 Name = "Tournament1"
-                //CreationDate = new DateTime(2020-02-21) //remember not to include date time in post json
-
             };
             var tournament2 = new Tournament()
             {
@@ -405,16 +374,6 @@ namespace TBoard.WebApi
                 GameId = 12,
                 IsWinner = false
             };
-            //var admin = new PlayerRole()
-            //{
-            //    RoleId = 1,
-            //    Role = "admin"
-            //};
-            //var player = new PlayerRole()
-            //{
-            //    RoleId = 2,
-            //    Role = "user"
-            //};
 
             modelBuilder.Entity<Tournament>()
                 .HasData(tournament1, tournament2);
@@ -431,8 +390,7 @@ namespace TBoard.WebApi
                          playerGame11, playerGame12, playerGame13, playerGame14,
                          playerGame15, playerGame16, playerGame17, playerGame18, playerGame19,
                          playerGame20, playerGame21, playerGame22, playerGame23, playerGame24);
-            //modelBuilder.Entity<PlayerRole>()
-            //    .HasData(admin, player);
+
         }
     }
 }

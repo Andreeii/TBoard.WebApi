@@ -40,16 +40,17 @@ namespace TBoard.WebApi.Services.Implementation
             return (mapper.Map<GameDto>(result)); ;
         }
 
-        public GameDto Post(GameForCreationDto game)
-        {
 
+        public GameDto Post(GameDto game)
+        {
             var gameEntity = mapper.Map<Game>(game);
             gameRepository.Post(gameEntity);
-            gameRepository.SaveChanges();
+            //gameRepository.SaveChanges();
             var gameToReturn = mapper.Map<GameDto>(gameEntity);
 
             return gameToReturn;
         }
+
 
         public void Update(Game entity)
         {

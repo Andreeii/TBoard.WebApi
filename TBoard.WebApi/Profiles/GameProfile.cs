@@ -13,7 +13,7 @@ namespace TBoard.WebApi.Profiles
         public GameProfile()
         {
             CreateMap<Game, GameDto>();
-            CreateMap<GameForCreationDto, Game>();
+            CreateMap<GameDto, Game>();
         }
     }
 }

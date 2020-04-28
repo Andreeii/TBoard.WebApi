@@ -10,7 +10,7 @@ using TBoard.WebApi;
 namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200422092906_IdentityMigration")]
+    [Migration("20200427093303_IdentityMigration")]
     partial class IdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -316,7 +316,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e819b4fd-d855-49ce-bec7-b6fb14e29950",
+                            ConcurrencyStamp = "9fd660d4-cd0d-4223-90dd-950b02bc5f30",
                             Email = "aaa@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -332,7 +332,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bbe50a19-15b6-46ce-83dd-5b910b3f017f",
+                            ConcurrencyStamp = "c5ab4576-a8fe-416c-8fbb-70fcdf60b047",
                             Email = "bbb@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -348,7 +348,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6db62e9b-e33b-468b-961d-0d1aefe3de29",
+                            ConcurrencyStamp = "d30baedc-c05c-4eac-a009-60d5d6115242",
                             Email = "ccc@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -364,7 +364,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc8cb57b-3808-406b-a375-1e9e98d1bf3e",
+                            ConcurrencyStamp = "7fd1431e-c900-473d-8e49-98b9433bc6c4",
                             Email = "ddd@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

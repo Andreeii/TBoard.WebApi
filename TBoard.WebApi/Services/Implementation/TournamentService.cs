@@ -45,17 +45,22 @@ namespace TBoard.WebApi.Services.Implementation
             }
         }
 
+        public object GetTournamentWIthWinner()
+        {
+            return tournamentRepository.GetTournamentWinner();
+        }
+
         public TournamentDto GetById(int tournamentId)
         {
             var result = tournamentRepository.GetById(tournamentId);
             return mapper.Map<TournamentDto>(result);
         }
 
-        public Tournament AddTournament(TournamentForCreationDto tournament)
+        public Tournament AddTournament(TournamentDto tournament)
         {
             var tournamentEntity = mapper.Map<Tournament>(tournament);
             tournamentRepository.Add(tournamentEntity);
-            tournamentRepository.SaveChanges();
+            //tournamentRepository.SaveChanges();
             var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
             return tournamentToReturn;
 

@@ -21,12 +21,17 @@ namespace TBoard.WebApi.Controllers
             this.tournamentService = tournamentService;
         }
 
-        [HttpGet()]
-        [HttpHead]
-        public ActionResult<IEnumerable<TournamentDto>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
+        //[HttpGet()]
+        //[HttpHead]
+        //public ActionResult<IEnumerable<TournamentDto>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
+        //{
+        //    return Ok(tournamentService.GetAll(tournamentResourceParameters));
+        //}
+
+        [HttpGet]
+        public ActionResult<object> GetAlll()
         {
-            //throw new Exception("Test Exception");
-            return Ok(tournamentService.GetAll(tournamentResourceParameters));
+            return Ok(tournamentService.GetTournamentWIthWinner());
         }
 
         [HttpGet("{tournamentId}")]
@@ -46,7 +51,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Tournament> CreateTournament(TournamentForCreationDto tournament)
+        public ActionResult<Tournament> CreateTournament(TournamentDto tournament)
         {
             return Ok(tournamentService.AddTournament(tournament));
         }

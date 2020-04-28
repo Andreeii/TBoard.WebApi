@@ -57,14 +57,20 @@ namespace TBoard.WebApi.Controllers
                 return Ok();
             }
         }
-        //to do 
+
+        //[HttpPost]
+        //public ActionResult<GameDto> CreateGameForTournament(GameForCreationDto game)
+        //{
+        //    if (!gameService.TournamentExists(game.TournamentId))
+        //    {
+        //        return NotFound();
+        //    }
+        //    return gameService.Post(game);
+        //}
+
         [HttpPost]
-        public ActionResult<GameDto> CreateGameForTournament(GameForCreationDto game)
+        public ActionResult<GameDto> AddGame(GameDto game)
         {
-            if (!gameService.TournamentExists(game.TournamentId))
-            {
-                return NotFound();
-            }
             return gameService.Post(game);
         }
     }

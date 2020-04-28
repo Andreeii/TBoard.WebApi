@@ -56,7 +56,14 @@ namespace TBoard.WebApi.Repositories.Implementation
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            gameContext.Add(entity);
+            using (var transaction = gameContext.Database.BeginTransaction())
+            {
+                gameContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Game] ON");
+                gameContext.Add(entity);
+                gameContext.SaveChanges();
+                gameContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Game] OFF");
+                transaction.Commit();
+            }
         }
 
         public void Update(Game entity)

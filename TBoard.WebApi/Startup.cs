@@ -55,12 +55,14 @@ namespace TBoard.WebApi
 
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IGameRepository), typeof(GameRepository));
             services.AddScoped(typeof(ITournamentRepository), typeof(TournamentRepository));
+            services.AddScoped(typeof(IGameRepository), typeof(GameRepository));
+            services.AddScoped(typeof(IPlayerGameRepository), typeof(PlayerGameRepository));
             services.AddScoped(typeof(IPlayerRepository), typeof(PlayerRepository));
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IPlayerService, PlayerService>();
+            services.AddTransient<IPlayerGameService, PlayerGameService>();
             services.AddSwaggerGen(setupAction => {
                 setupAction.SwaggerDoc("TournamentOpenAPISpecification",
                     new Microsoft.OpenApi.Models.OpenApiInfo()

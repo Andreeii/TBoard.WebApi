@@ -12,8 +12,9 @@ namespace TBoard.WebApi.Services.Interfaces
         public IEnumerable<GameDto> GetByTournamentId(int tournamentId);
         public GameDto GetById(int id);
         public void DeleteById(int id);
-        public GameDto Post(GameForCreationDto game);
+        //public GameDto Post(GameForCreationDto game);
 
+        public GameDto Post(GameDto game);
         public void Update(Game entity);
 
         public bool TournamentExists(int id);
