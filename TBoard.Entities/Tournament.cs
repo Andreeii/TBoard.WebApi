@@ -6,11 +6,8 @@ using System.Text;
 
 namespace TBoard.Entities
 {
-  public  class Tournament
+  public  class Tournament:BaseEntity
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Required]
-        public int TournamentId { get; set; }
         public string Name { get; set; }
 
         public DateTime CreationDate { get; set; }

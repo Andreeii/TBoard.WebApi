@@ -9,7 +9,6 @@ namespace TBoard.WebApi.Profiles
         public TournamentProfile()
         {
             CreateMap<Tournament, TournamentDto>();
-            CreateMap<TournamentForCreationDto, Tournament>();
             CreateMap<TournamentDto, Tournament>();
 
         }

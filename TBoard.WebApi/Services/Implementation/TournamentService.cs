@@ -60,7 +60,7 @@ namespace TBoard.WebApi.Services.Implementation
         {
             var tournamentEntity = mapper.Map<Tournament>(tournament);
             tournamentRepository.Add(tournamentEntity);
-            //tournamentRepository.SaveChanges();
+            tournamentRepository.SaveChanges();
             var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
             return tournamentToReturn;
 

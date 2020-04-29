@@ -8,9 +8,7 @@ namespace TBoard.Dto
 {
     public class GameDto
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Required]
-        public int GameId { get; set; }
+        public int Id { get; set; }
         public int TournamentId { get; set; }
     }
 }

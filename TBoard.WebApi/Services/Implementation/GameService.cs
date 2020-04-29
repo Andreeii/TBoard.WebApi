@@ -45,9 +45,8 @@ namespace TBoard.WebApi.Services.Implementation
         {
             var gameEntity = mapper.Map<Game>(game);
             gameRepository.Post(gameEntity);
-            //gameRepository.SaveChanges();
+            gameRepository.SaveChanges();
             var gameToReturn = mapper.Map<GameDto>(gameEntity);
-
             return gameToReturn;
         }
 

@@ -10,7 +10,7 @@ using TBoard.WebApi;
 namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200427093303_IdentityMigration")]
+    [Migration("20200428094530_IdentityMigration")]
     partial class IdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,7 @@ namespace TBoard.WebApi.Migrations
 
             modelBuilder.Entity("TBoard.Entities.Game", b =>
                 {
-                    b.Property<int>("GameId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -161,7 +161,7 @@ namespace TBoard.WebApi.Migrations
                     b.Property<int>("TournamentId")
                         .HasColumnType("int");
 
-                    b.HasKey("GameId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TournamentId");
 
@@ -170,62 +170,62 @@ namespace TBoard.WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            GameId = 1,
+                            Id = 1,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 2,
+                            Id = 2,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 3,
+                            Id = 3,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 4,
+                            Id = 4,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 5,
+                            Id = 5,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 6,
+                            Id = 6,
                             TournamentId = 1
                         },
                         new
                         {
-                            GameId = 7,
+                            Id = 7,
                             TournamentId = 2
                         },
                         new
                         {
-                            GameId = 8,
+                            Id = 8,
                             TournamentId = 2
                         },
                         new
                         {
-                            GameId = 9,
+                            Id = 9,
                             TournamentId = 2
                         },
                         new
                         {
-                            GameId = 10,
+                            Id = 10,
                             TournamentId = 2
                         },
                         new
                         {
-                            GameId = 11,
+                            Id = 11,
                             TournamentId = 2
                         },
                         new
                         {
-                            GameId = 12,
+                            Id = 12,
                             TournamentId = 2
                         });
                 });
@@ -316,7 +316,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9fd660d4-cd0d-4223-90dd-950b02bc5f30",
+                            ConcurrencyStamp = "9d98d703-4d61-42ea-908b-a3a04c1e9f8c",
                             Email = "aaa@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -332,7 +332,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5ab4576-a8fe-416c-8fbb-70fcdf60b047",
+                            ConcurrencyStamp = "ed9a8653-fec3-44ac-a798-6f6f356fdff1",
                             Email = "bbb@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -348,7 +348,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d30baedc-c05c-4eac-a009-60d5d6115242",
+                            ConcurrencyStamp = "0889c6b4-a588-4050-a224-864f7639b9d1",
                             Email = "ccc@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -364,7 +364,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7fd1431e-c900-473d-8e49-98b9433bc6c4",
+                            ConcurrencyStamp = "b6ce203d-b347-444d-a8c4-3e34dff8830c",
                             Email = "ddd@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -575,7 +575,7 @@ namespace TBoard.WebApi.Migrations
 
             modelBuilder.Entity("TBoard.Entities.Tournament", b =>
                 {
-                    b.Property<int>("TournamentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -590,20 +590,20 @@ namespace TBoard.WebApi.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("TournamentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Tournament");
 
                     b.HasData(
                         new
                         {
-                            TournamentId = 1,
+                            Id = 1,
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Tournament1"
                         },
                         new
                         {
-                            TournamentId = 2,
+                            Id = 2,
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Tournament2"
                         });

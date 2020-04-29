@@ -98,12 +98,12 @@ namespace TBoard.WebApi
         {
             var tournament1 = new Tournament()
             {
-                TournamentId = 1,
+                Id = 1,
                 Name = "Tournament1"
             };
             var tournament2 = new Tournament()
             {
-                TournamentId = 2,
+                Id = 2,
                 Name = "Tournament2",
 
             };
@@ -145,62 +145,62 @@ namespace TBoard.WebApi
             };
             var game1 = new Game
             {
-                GameId = 1,
+                Id = 1,
                 TournamentId = 1
             };
             var game2 = new Game
             {
-                GameId = 2,
+                Id = 2,
                 TournamentId = 1
             };
             var game3 = new Game
             {
-                GameId = 3,
+                Id = 3,
                 TournamentId = 1
             };
             var game4 = new Game
             {
-                GameId = 4,
+                Id = 4,
                 TournamentId = 1
             };
             var game5 = new Game
             {
-                GameId = 5,
+                Id = 5,
                 TournamentId = 1
             };
             var game6 = new Game
             {
-                GameId = 6,
+                Id = 6,
                 TournamentId = 1
             };
             var game7 = new Game
             {
-                GameId = 7,
+                Id = 7,
                 TournamentId = 2
             };
             var game8 = new Game
             {
-                GameId = 8,
+                Id = 8,
                 TournamentId = 2
             };
             var game9 = new Game
             {
-                GameId = 9,
+                Id = 9,
                 TournamentId = 2
             };
             var game10 = new Game
             {
-                GameId = 10,
+                Id = 10,
                 TournamentId = 2
             };
             var game11 = new Game
             {
-                GameId = 11,
+                Id = 11,
                 TournamentId = 2
             };
             var game12 = new Game
             {
-                GameId = 12,
+                Id = 12,
                 TournamentId = 2
             };
             var playerGame1 = new PlayerGame()

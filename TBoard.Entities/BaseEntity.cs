@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace TBoard.Dto
+namespace TBoard.Entities
 {
-    public class TournamentForCreationDto
+    public abstract class BaseEntity
     {
+        [Key]
         [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
+        public int Id { get; set; }
 
     }
 }

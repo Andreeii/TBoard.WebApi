@@ -69,7 +69,7 @@ namespace TBoard.WebApi.Controllers
         //}
 
         [HttpPost]
-        public ActionResult<GameDto> AddGame(GameDto game)
+        public ActionResult<GameDto> Post(GameDto game)
         {
             return gameService.Post(game);
         }

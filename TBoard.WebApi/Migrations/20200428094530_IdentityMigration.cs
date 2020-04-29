@@ -60,14 +60,14 @@ namespace TBoard.WebApi.Migrations
                 name: "Tournament",
                 columns: table => new
                 {
-                    TournamentId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tournament", x => x.TournamentId);
+                    table.PrimaryKey("PK_Tournament", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,18 +191,18 @@ namespace TBoard.WebApi.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TournamentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Game", x => x.GameId);
+                    table.PrimaryKey("PK_Game", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Game_Tournament_TournamentId",
                         column: x => x.TournamentId,
                         principalTable: "Tournament",
-                        principalColumn: "TournamentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -223,7 +223,7 @@ namespace TBoard.WebApi.Migrations
                         name: "FK_Player_Game_Game_GameId",
                         column: x => x.GameId,
                         principalTable: "Game",
-                        principalColumn: "GameId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Player_Game_Players_PlayerId",
@@ -236,7 +236,7 @@ namespace TBoard.WebApi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tournament",
-                columns: new[] { "TournamentId", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Tournament1" },
@@ -249,15 +249,15 @@ namespace TBoard.WebApi.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "9fd660d4-cd0d-4223-90dd-950b02bc5f30", "aaa@gmail.com", false, false, null, "aaa", null, null, "admin", null, false, null, "aaa", false, "a1" },
-                    { 2, 0, "c5ab4576-a8fe-416c-8fbb-70fcdf60b047", "bbb@gmail.com", false, false, null, "bbb", null, null, "admin", null, false, null, "bbb", false, "b1" },
-                    { 3, 0, "d30baedc-c05c-4eac-a009-60d5d6115242", "ccc@gmail.com", false, false, null, "ccc", null, null, "user", null, false, null, "ccc", false, "c1" },
-                    { 4, 0, "7fd1431e-c900-473d-8e49-98b9433bc6c4", "ddd@gmail.com", false, false, null, "ddd", null, null, "user", null, false, null, "ddd", false, "d1" }
+                    { 1, 0, "9d98d703-4d61-42ea-908b-a3a04c1e9f8c", "aaa@gmail.com", false, false, null, "aaa", null, null, "admin", null, false, null, "aaa", false, "a1" },
+                    { 2, 0, "ed9a8653-fec3-44ac-a798-6f6f356fdff1", "bbb@gmail.com", false, false, null, "bbb", null, null, "admin", null, false, null, "bbb", false, "b1" },
+                    { 3, 0, "0889c6b4-a588-4050-a224-864f7639b9d1", "ccc@gmail.com", false, false, null, "ccc", null, null, "user", null, false, null, "ccc", false, "c1" },
+                    { 4, 0, "b6ce203d-b347-444d-a8c4-3e34dff8830c", "ddd@gmail.com", false, false, null, "ddd", null, null, "user", null, false, null, "ddd", false, "d1" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Game",
-                columns: new[] { "GameId", "TournamentId" },
+                columns: new[] { "Id", "TournamentId" },
                 values: new object[,]
                 {
                     { 1, 1 },

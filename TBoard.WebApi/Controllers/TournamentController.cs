@@ -29,7 +29,7 @@ namespace TBoard.WebApi.Controllers
         //}
 
         [HttpGet]
-        public ActionResult<object> GetAlll()
+        public ActionResult<object> GetAll()
         {
             return Ok(tournamentService.GetTournamentWIthWinner());
         }
@@ -51,7 +51,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Tournament> CreateTournament(TournamentDto tournament)
+        public ActionResult<Tournament> Post(TournamentDto tournament)
         {
             return Ok(tournamentService.AddTournament(tournament));
         }

@@ -4,9 +4,8 @@ using System.Text;
 
 namespace TBoard.Entities
 {
-   public class PlayerGame
+   public class PlayerGame:BaseEntity
     {
-        public int Id { get; set; }
         public int? PlayerId { get; set; }
         public int GameId { get; set; }
         public bool? IsWinner { get; set; }

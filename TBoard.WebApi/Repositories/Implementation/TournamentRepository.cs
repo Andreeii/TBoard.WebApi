@@ -27,15 +27,7 @@ namespace TBoard.WebApi.Repositories.Implementation
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            using (var transaction = tournamentContext.Database.BeginTransaction())
-            {
-                tournamentContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Tournament] ON");
                 tournamentContext.Add(entity);
-                tournamentContext.SaveChanges();
-                tournamentContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Tournament] OFF");
-                transaction.Commit();
-
-            }
         }
 
         public void DeleteById(int id)
