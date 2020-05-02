@@ -23,10 +23,6 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public void Add(Tournament entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
                 tournamentContext.Add(entity);
         }
 
@@ -34,35 +30,6 @@ namespace TBoard.WebApi.Repositories.Implementation
         {
             Tournament existing = table.Find(id);
             table.Remove(existing);
-        }
-
-        public object GetTournamentWinner()
-        {
-            var q1 = tournamentContext.PlayerGame
-                .Where(x => x.IsWinner == true)
-                .GroupBy(x => new { x.PlayerId, x.Game.TournamentId })
-                .Select(x => new
-                {
-                    PlayerId = x.Key.PlayerId,
-                    TournamentId = x.Key.TournamentId,
-                    Wins = x.Count()
-
-                });
-            var q2 = tournamentContext.PlayerGame
-                 .Where(x => x.IsWinner == true)
-                 .GroupBy(x => new { x.PlayerId, x.Game.TournamentId, x.Game.Tournament.Name, x.Player.UserName })
-                 .Select(x => new
-                      {
-                        PlayerId = x.Key.PlayerId,
-                        TournamentId = x.Key.TournamentId,
-                        NumberOfWins = x.Count(),
-                        WinnerName = x.Key.UserName,
-                        TournamentName = x.Key.Name
-
-                       })
-                 .Where(x => x.NumberOfWins == q1.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins)).ToList();
-
-            return q2;
         }
 
         public bool Exists(int id)
@@ -78,24 +45,9 @@ namespace TBoard.WebApi.Repositories.Implementation
         }
         public IEnumerable<Tournament> GetAll()
         {
-            return table.ToList();
+            return table;
         }
 
-        public IEnumerable<Tournament> GetAll(TournamentResourceParameters tournamentResourceParameters)
-        {
-            var collection = tournamentContext.Tournament as IQueryable<Tournament>;
-            if (tournamentResourceParameters == null)
-            {
-                return GetAll();
-            }
-            else if (!string.IsNullOrWhiteSpace(tournamentResourceParameters.SearchQuery))
-            {
-                var searchQuery = tournamentResourceParameters.SearchQuery.Trim();
-                collection = collection
-                    .Where(a => a.Name.Contains(searchQuery));
-            }
-            return collection.ToList();
-        }
 
         public Tournament GetById(int id)
         {

@@ -9,15 +9,13 @@ namespace TBoard.WebApi.Services.Interfaces
 {
     public interface IGameService
     {
-        public IEnumerable<GameDto> GetByTournamentId(int tournamentId);
+        public IEnumerable<GameDto> GetAll(int tournamentId);
+
         public GameDto GetById(int id);
         public void DeleteById(int id);
-        //public GameDto Post(GameForCreationDto game);
 
-        public GameDto Post(GameDto game);
+        public GameDto[] PostAll(GameDto[] games);
         public void Update(Game entity);
-
-        public bool TournamentExists(int id);
 
         public bool GameExists(int id);
 

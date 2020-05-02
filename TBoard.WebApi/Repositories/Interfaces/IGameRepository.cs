@@ -9,15 +9,16 @@ namespace TBoard.WebApi.Repositories.Interfaces
     public interface IGameRepository
     {
 
-        public void Post(Game entity);
+        public void PostAll(Game[] games);
 
         public void DeleteById(int id);
         public  Game GetById(int id);
         public IEnumerable<Game> GetByTournamentId(int tournamentId);
 
+        public IEnumerable<Game> GetAll();
+
         public void Update(Game entity);
 
-        public bool Exists(int id);
         public bool GameExists(int id);
 
         public void SaveChanges();

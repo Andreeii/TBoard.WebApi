@@ -34,32 +34,22 @@ namespace TBoard.WebApi.Repositories.Implementation
                 .ToList();
         }
 
+        public IEnumerable<Game> GetAll()
+        {
+            return gameTable.ToList();
+        }
+
         public Game GetById(int id)
         {
             return gameTable.Find(id);
 
         }
-        public bool Exists(int id)
-        {
-            if (tournamentTable.Find(id) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public void Post(Game entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            using (var transaction = gameContext.Database.BeginTransaction())
 
-                gameContext.Add(entity);
+        public void PostAll(Game[] games)
+        {
+            gameContext.AddRange(games);
         }
+
 
         public void Update(Game entity)
         {

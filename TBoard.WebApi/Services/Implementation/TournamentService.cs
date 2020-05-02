@@ -13,12 +13,14 @@ namespace TBoard.WebApi.Services.Implementation
     public class TournamentService : ITournamentService
     {
         private readonly ITournamentRepository tournamentRepository;
+        private readonly IPlayerGameRepository playerGameRepository;
         private readonly IMapper mapper;
 
 
-        public TournamentService(ITournamentRepository tournamentRepository, IMapper mapper)
+        public TournamentService(ITournamentRepository tournamentRepository, IPlayerGameRepository playerGameRepository, IMapper mapper)
         {
             this.tournamentRepository = tournamentRepository;
+            this.playerGameRepository = playerGameRepository;
             this.mapper = mapper;
 
         }
@@ -27,28 +29,65 @@ namespace TBoard.WebApi.Services.Implementation
             tournamentRepository.DeleteById(id);
             tournamentRepository.SaveChanges();
         }
-
-        public IEnumerable<TournamentDto> GetAll(TournamentResourceParameters tournamentResourceParameters)
+        public object GetTournamentWithWinner(TournamentResourceParameters tournamentResourceParameters)
         {
-            tournamentRepository.GetTournamentWinner();
+            if (!string.IsNullOrWhiteSpace(tournamentResourceParameters.SearchQuery))
+            {
+                var searchQuery = tournamentResourceParameters.SearchQuery.Trim();
+                var q3 = playerGameRepository.GetAll()
+             .Where(x => x.IsWinner == true)
+             .GroupBy(x => new { x.PlayerId, x.Game.TournamentId })
+             .Select(x => new
+             {
+                 PlayerId = x.Key.PlayerId,
+                 TournamentId = x.Key.TournamentId,
+                 Wins = x.Count()
 
-            IEnumerable<Tournament> result;
-            if (tournamentResourceParameters == null)
-            {
-                result = tournamentRepository.GetAll();
-                return mapper.Map<IEnumerable<TournamentDto>>(result);
+             });
+                var q4 = playerGameRepository.GetAll()
+                         .Where(x => x.IsWinner == true)
+                         .GroupBy(x => new { x.PlayerId, x.Game.TournamentId, x.Game.Tournament.Name, x.Player.UserName })
+                         .Select(x => new
+                         {
+                             PlayerId = x.Key.PlayerId,
+                             TournamentId = x.Key.TournamentId,
+                             NumberOfWins = x.Count(),
+                             WinnerName = x.Key.UserName,
+                             TournamentName = x.Key.Name
+
+                         })
+                         .Where(x => x.NumberOfWins == q3.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins))
+                         .Where(a => a.TournamentName.Contains(searchQuery));
+
+                return q4.ToList();
             }
-            else
-            {
-                result = tournamentRepository.GetAll(tournamentResourceParameters);
-                return mapper.Map<IEnumerable<TournamentDto>>(result);
-            }
+            var q1 = playerGameRepository.GetAll()
+                 .Where(x => x.IsWinner == true)
+                 .GroupBy(x => new { x.PlayerId, x.Game.TournamentId })
+                 .Select(x => new
+                 {
+                     PlayerId = x.Key.PlayerId,
+                     TournamentId = x.Key.TournamentId,
+                     Wins = x.Count()
+
+                 });
+            var q2 = playerGameRepository.GetAll()
+                     .Where(x => x.IsWinner == true)
+                     .GroupBy(x => new { x.PlayerId, x.Game.TournamentId, x.Game.Tournament.Name, x.Player.UserName })
+                     .Select(x => new
+                     {
+                         PlayerId = x.Key.PlayerId,
+                         TournamentId = x.Key.TournamentId,
+                         NumberOfWins = x.Count(),
+                         WinnerName = x.Key.UserName,
+                         TournamentName = x.Key.Name
+
+                     })
+                     .Where(x => x.NumberOfWins == q1.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins));
+
+            return q2.ToList();
         }
 
-        public object GetTournamentWIthWinner()
-        {
-            return tournamentRepository.GetTournamentWinner();
-        }
 
         public TournamentDto GetById(int tournamentId)
         {
@@ -58,6 +97,10 @@ namespace TBoard.WebApi.Services.Implementation
 
         public Tournament AddTournament(TournamentDto tournament)
         {
+            if (tournament == null)
+            {
+                throw new ArgumentNullException(nameof(tournament));
+            }
             var tournamentEntity = mapper.Map<Tournament>(tournament);
             tournamentRepository.Add(tournamentEntity);
             tournamentRepository.SaveChanges();

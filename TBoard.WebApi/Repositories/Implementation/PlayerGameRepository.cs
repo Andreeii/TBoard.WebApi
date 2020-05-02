@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
 
@@ -17,18 +20,14 @@ namespace TBoard.WebApi.Repositories.Implementation
             playerGameTable = playerGameContext.Set<PlayerGame>();
         }
 
-        public void Post(PlayerGame playerGame)
-        {
-            if (playerGame == null)
-            {
-                throw new ArgumentNullException(nameof(playerGame));
-            }
-            playerGameContext.Add(playerGame);
-        }
-
         public void PostAll(PlayerGame[] playerGames)
         {
             playerGameContext.AddRange(playerGames);
+        }
+
+        public IQueryable<PlayerGame> GetAll()
+        {
+            return playerGameTable;
         }
 
         public void SaveChanges()

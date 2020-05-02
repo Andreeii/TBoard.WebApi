@@ -21,17 +21,35 @@ namespace TBoard.WebApi.Controllers
             this.tournamentService = tournamentService;
         }
 
-        //[HttpGet()]
-        //[HttpHead]
-        //public ActionResult<IEnumerable<TournamentDto>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
-        //{
-        //    return Ok(tournamentService.GetAll(tournamentResourceParameters));
-        //}
-
         [HttpGet]
-        public ActionResult<object> GetAll()
+        public ActionResult<IEnumerable<object>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
         {
-            return Ok(tournamentService.GetTournamentWIthWinner());
+            //var tournament = new TournamentDto()
+            //{
+            //    Name = "Example2",
+            //    Game = new List<GameDto>()
+            //    {
+            //        new GameDto
+            //        {
+            //            PlayerGame = new List<PlayerGameDto>()
+            //            {
+            //                new PlayerGameDto
+            //                {
+            //                    playerId = 1,
+            //                    IsWinner =true
+            //                },
+            //                new PlayerGameDto
+            //                {
+            //                    playerId = 2,
+            //                    IsWinner =false
+            //                }
+            //            }
+            //        }
+            //    }
+            //};
+            //var result = tournamentService.AddTournament(tournament);
+
+            return Ok(tournamentService.GetTournamentWithWinner( tournamentResourceParameters));
         }
 
         [HttpGet("{tournamentId}")]
@@ -45,14 +63,16 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpDelete("{tournamentId}")]
-        public void DeleteById(int tournamentId)
+        public ActionResult<int> DeleteById(int tournamentId)
         {
           tournamentService.DeleteById(tournamentId);
+            return Ok(tournamentId);
         }
 
         [HttpPost]
         public ActionResult<Tournament> Post(TournamentDto tournament)
         {
+ 
             return Ok(tournamentService.AddTournament(tournament));
         }
 

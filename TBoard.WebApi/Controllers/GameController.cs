@@ -24,11 +24,7 @@ namespace TBoard.WebApi.Controllers
         [HttpGet()]
         public ActionResult<IEnumerable<GameDto>> GetAll(int tournamentId)
         {
-            if (!gameService.TournamentExists(tournamentId))
-            {
-                return NotFound();
-            }
-            var result = gameService.GetByTournamentId(tournamentId);
+            var result = gameService.GetAll(tournamentId);
             return Ok(result);
         }
 
@@ -58,20 +54,10 @@ namespace TBoard.WebApi.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult<GameDto> CreateGameForTournament(GameForCreationDto game)
-        //{
-        //    if (!gameService.TournamentExists(game.TournamentId))
-        //    {
-        //        return NotFound();
-        //    }
-        //    return gameService.Post(game);
-        //}
-
         [HttpPost]
-        public ActionResult<GameDto> Post(GameDto game)
+        public ActionResult<GameDto[]> Post(GameDto[] game)
         {
-            return gameService.Post(game);
+            return Ok(gameService.PostAll(game));
         }
     }
 }

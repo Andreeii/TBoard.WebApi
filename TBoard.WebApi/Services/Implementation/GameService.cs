@@ -13,13 +13,11 @@ namespace TBoard.WebApi.Services.Implementation
     public class GameService : IGameService
     {
         private readonly IGameRepository gameRepository;
-        private readonly ITournamentRepository tournamentRepository;
         private readonly IMapper mapper;
 
-        public GameService(IGameRepository gameRepository, ITournamentRepository tournamentRepository,IMapper mapper)
+        public GameService(IGameRepository gameRepository,IMapper mapper)
         {
             this.gameRepository = gameRepository;
-            this.tournamentRepository = tournamentRepository;
             this.mapper = mapper;
         }
         public void DeleteById(int id)
@@ -28,12 +26,14 @@ namespace TBoard.WebApi.Services.Implementation
             gameRepository.SaveChanges();
         }
 
-        public IEnumerable<GameDto> GetByTournamentId(int tournamentId)
+        public IEnumerable<GameDto> GetAll(int tournamentId)
         {
            var result = gameRepository.GetByTournamentId(tournamentId);
             return mapper.Map<IEnumerable<GameDto>>(result);
 
         }
+
+
         public GameDto GetById(int id)
         {
             var result = gameRepository.GetById(id);
@@ -41,27 +41,24 @@ namespace TBoard.WebApi.Services.Implementation
         }
 
 
-        public GameDto Post(GameDto game)
+        public GameDto[] PostAll(GameDto[] games)
         {
-            var gameEntity = mapper.Map<Game>(game);
-            gameRepository.Post(gameEntity);
+            Game[] gamesEntity = new Game[games.Length];
+            for (int i = 0; i < games.Length; i++)
+            {
+                gamesEntity[i] = mapper.Map<Game>(games[i]);
+            }
+            gameRepository.PostAll(gamesEntity);
             gameRepository.SaveChanges();
-            var gameToReturn = mapper.Map<GameDto>(gameEntity);
-            return gameToReturn;
+
+            return games;
+
         }
 
 
         public void Update(Game entity)
         {
             gameRepository.Update(entity);
-        }
-
-        public bool TournamentExists(int id)
-        {
-            if (tournamentRepository.Exists(id) == true)
-                return true;
-            else
-                return false;
         }
 
         public bool GameExists(int id)
@@ -76,5 +73,7 @@ namespace TBoard.WebApi.Services.Implementation
         {
             gameRepository.SaveChanges();
         }
+
+ 
     }
 }

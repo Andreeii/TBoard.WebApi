@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
+using TBoard.Entities;
 using TBoard.WebApi.Services.Interfaces;
 
 namespace TBoard.WebApi.Controllers
@@ -17,12 +18,6 @@ namespace TBoard.WebApi.Controllers
         {
             this.playerGameService = playerGameService;
         }
-
-        //[HttpPost]
-        //public ActionResult<PlayerGameDto> Post(PlayerGameDto playerGame)
-        //{
-        //    return Ok(playerGameService.Post(playerGame));
-        //}
         
         [HttpPost]
         public ActionResult<PlayerGameDto[]> Post([FromBody]PlayerGameDto[] playerGames)

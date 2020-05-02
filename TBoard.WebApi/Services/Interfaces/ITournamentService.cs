@@ -11,12 +11,10 @@ namespace TBoard.WebApi.Services.Implementation
     public interface ITournamentService
     {
 
-        public IEnumerable<TournamentDto> GetAll(TournamentResourceParameters tournamentResourceParameters);
         public TournamentDto GetById(int id);
         public void DeleteById(int id);
         public Tournament AddTournament(TournamentDto entity);
-        public object GetTournamentWIthWinner();
-
+        public object GetTournamentWithWinner(TournamentResourceParameters tournamentResourceParameters);
         public TournamentDto Update(TournamentDto entity);
 
     }

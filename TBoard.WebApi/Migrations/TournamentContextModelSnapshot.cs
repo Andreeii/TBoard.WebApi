@@ -314,7 +314,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d98d703-4d61-42ea-908b-a3a04c1e9f8c",
+                            ConcurrencyStamp = "35536fe4-c577-4fc1-a149-327f16cc1f9d",
                             Email = "aaa@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -330,7 +330,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ed9a8653-fec3-44ac-a798-6f6f356fdff1",
+                            ConcurrencyStamp = "6f48511b-c14c-46bc-8119-abb87c753038",
                             Email = "bbb@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -346,7 +346,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0889c6b4-a588-4050-a224-864f7639b9d1",
+                            ConcurrencyStamp = "3f6ffabc-4d4a-4ac4-b4d1-fec7100668ca",
                             Email = "ccc@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -362,7 +362,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b6ce203d-b347-444d-a8c4-3e34dff8830c",
+                            ConcurrencyStamp = "4b39b49b-d1ec-4837-b054-c16d73506fe4",
                             Email = "ddd@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

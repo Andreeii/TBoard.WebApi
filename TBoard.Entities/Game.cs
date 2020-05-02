@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TBoard.Entities
 {
@@ -8,6 +9,8 @@ namespace TBoard.Entities
     {
         public int TournamentId { get; set; }
         public virtual Tournament Tournament { get; set; }
+
+       // [JsonIgnore]
         public virtual ICollection<PlayerGame> PlayerGame { get; set; }
     }
 }

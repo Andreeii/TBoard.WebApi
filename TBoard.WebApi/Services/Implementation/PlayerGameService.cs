@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
@@ -18,18 +21,6 @@ namespace TBoard.WebApi.Services.Implementation
             this.playerGameRepository = playerGameRepository;
             this.mapper = mapper;
         }
-
-
-        public PlayerGameDto Post(PlayerGameDto playerGame)
-        {
-            var gameEntity = mapper.Map<PlayerGame>(playerGame);
-            playerGameRepository.Post(gameEntity);
-            playerGameRepository.SaveChanges();
-            var gameToReturn = mapper.Map<PlayerGameDto>(gameEntity);
-
-            return gameToReturn;
-        }
-
         public PlayerGameDto[] PostAll(PlayerGameDto[] playerGames)
         {
             PlayerGame[] gamesEntity = new PlayerGame[playerGames.Length];
