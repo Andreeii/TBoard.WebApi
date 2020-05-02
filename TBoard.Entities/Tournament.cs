@@ -13,7 +13,6 @@ namespace TBoard.Entities
 
         public DateTime CreationDate { get; set; }
 
-       // [JsonIgnore]
         public virtual ICollection<Game> Game { get; set; }
     }
 }

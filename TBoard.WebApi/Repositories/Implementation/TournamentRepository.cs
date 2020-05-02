@@ -21,9 +21,10 @@ namespace TBoard.WebApi.Repositories.Implementation
             table = context.Set<Tournament>();
         }
 
-        public void Add(Tournament entity)
+        public Tournament Add(Tournament entity)
         {
-                tournamentContext.Add(entity);
+           var tournament = tournamentContext.Add(entity);
+           return tournament.Entity;
         }
 
         public void DeleteById(int id)

@@ -13,7 +13,7 @@ namespace TBoard.WebApi.Services.Implementation
 
         public TournamentDto GetById(int id);
         public void DeleteById(int id);
-        public Tournament AddTournament(TournamentDto entity);
+        public TournamentDto AddTournament(TournamentDto entity);
         public object GetTournamentWithWinner(TournamentResourceParameters tournamentResourceParameters);
         public TournamentDto Update(TournamentDto entity);
 

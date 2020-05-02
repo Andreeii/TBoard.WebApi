@@ -13,7 +13,7 @@ namespace TBoard.WebApi.Repositories.Interfaces
 
         //object GetTournamentWinner();
 
-        void Add(Tournament entity);
+        Tournament Add(Tournament entity);
 
         void DeleteById(int id);
 

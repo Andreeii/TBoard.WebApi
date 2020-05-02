@@ -9,8 +9,6 @@ namespace TBoard.Entities
     {
         public int TournamentId { get; set; }
         public virtual Tournament Tournament { get; set; }
-
-       // [JsonIgnore]
         public virtual ICollection<PlayerGame> PlayerGame { get; set; }
     }
 }

@@ -70,10 +70,10 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Tournament> Post(TournamentDto tournament)
+        public IActionResult Post(TournamentDto tournament)
         {
- 
             return Ok(tournamentService.AddTournament(tournament));
+           
         }
 
         [HttpPut("{tournamentId}")]

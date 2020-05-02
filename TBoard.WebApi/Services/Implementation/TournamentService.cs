@@ -95,7 +95,7 @@ namespace TBoard.WebApi.Services.Implementation
             return mapper.Map<TournamentDto>(result);
         }
 
-        public Tournament AddTournament(TournamentDto tournament)
+        public TournamentDto AddTournament(TournamentDto tournament)
         {
             if (tournament == null)
             {
@@ -104,8 +104,8 @@ namespace TBoard.WebApi.Services.Implementation
             var tournamentEntity = mapper.Map<Tournament>(tournament);
             tournamentRepository.Add(tournamentEntity);
             tournamentRepository.SaveChanges();
-            var tournamentToReturn = mapper.Map<Tournament>(tournamentEntity);
-            return tournamentToReturn;
+            var tournamentDto = mapper.Map<TournamentDto>(tournamentEntity);
+            return tournamentDto;
 
         }
 

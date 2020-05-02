@@ -36,7 +36,7 @@ namespace TBoard.WebApi
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();
+            }).AddXmlDataContractSerializerFormatters();       
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<TournamentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
