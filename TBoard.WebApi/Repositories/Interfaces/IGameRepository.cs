@@ -13,9 +13,9 @@ namespace TBoard.WebApi.Repositories.Interfaces
 
         public void DeleteById(int id);
         public  Game GetById(int id);
-        public IEnumerable<Game> GetByTournamentId(int tournamentId);
+        public ICollection<Game> GetByTournamentId(int tournamentId);
 
-        public IEnumerable<Game> GetAll();
+        public ICollection<Game> GetAll();
 
         public void Update(Game entity);
 

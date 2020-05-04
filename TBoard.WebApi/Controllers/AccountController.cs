@@ -34,7 +34,7 @@ namespace TBoard.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(PlayerForLoginDto userForLoginDto)
         {
-            var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.Username, userForLoginDto.Password, false, false);
+            var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
 
             if (checkingPasswordResult.Succeeded)
             {
@@ -53,7 +53,6 @@ namespace TBoard.WebApi.Controllers
 
                 return Ok(new { AccessToken = encodedToken });
             }
-
             return Unauthorized();
         }
     }

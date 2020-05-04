@@ -26,10 +26,11 @@ namespace TBoard.WebApi.Services.Implementation
             gameRepository.SaveChanges();
         }
 
-        public IEnumerable<GameDto> GetAll(int tournamentId)
+        public ICollection<GameDto> GetAll(int tournamentId)
         {
-           var result = gameRepository.GetByTournamentId(tournamentId);
-            return mapper.Map<IEnumerable<GameDto>>(result);
+           var result = gameRepository.GetByTournamentId(tournamentId).ToList();
+
+            return mapper.Map<ICollection<GameDto>>(result);
 
         }
 
@@ -37,7 +38,7 @@ namespace TBoard.WebApi.Services.Implementation
         public GameDto GetById(int id)
         {
             var result = gameRepository.GetById(id);
-            return (mapper.Map<GameDto>(result)); ;
+            return (mapper.Map<GameDto>(result)); 
         }
 
 

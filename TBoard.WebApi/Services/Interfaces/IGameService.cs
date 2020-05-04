@@ -9,7 +9,7 @@ namespace TBoard.WebApi.Services.Interfaces
 {
     public interface IGameService
     {
-        public IEnumerable<GameDto> GetAll(int tournamentId);
+        public ICollection<GameDto> GetAll(int tournamentId);
 
         public GameDto GetById(int id);
         public void DeleteById(int id);

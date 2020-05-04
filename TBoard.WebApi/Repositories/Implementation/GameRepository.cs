@@ -14,6 +14,7 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         protected DbSet<Tournament> tournamentTable;
         protected DbSet<Game> gameTable;
+        protected DbSet<PlayerGame> playerGames;
 
         public GameRepository(TournamentContext context)
         {
@@ -27,16 +28,18 @@ namespace TBoard.WebApi.Repositories.Implementation
             gameTable.Remove(existing);
         }
 
-        public IEnumerable<Game> GetByTournamentId(int tournamentId)
+        public ICollection<Game> GetByTournamentId(int tournamentId)
         {
             return gameTable
                 .Where(x => x.TournamentId == tournamentId)
                 .ToList();
         }
 
-        public IEnumerable<Game> GetAll()
+        public ICollection<Game> GetAll()
         {
-            return gameTable.ToList();
+            var result = gameTable;
+            return result.ToList();
+
         }
 
         public Game GetById(int id)

@@ -33,10 +33,6 @@ namespace TBoard.WebApi
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(setupAction =>
-            {
-                setupAction.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();       
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<TournamentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -46,12 +42,13 @@ namespace TBoard.WebApi
             })
            .AddEntityFrameworkStores<TournamentContext>();
 
-            var authOptions = services.ConfigureAuthOptions(Configuration);
-            services.AddJwtAuthentication(authOptions);
-            //services.AddControllers(options =>
-            //{
-            //    options.Filters.Add(new AuthorizeFilter());
-            //});
+            //var authOptions = services.ConfigureAuthOptions(Configuration);
+            //services.AddJwtAuthentication(authOptions);
+            services.AddControllers(options =>
+            {
+                //options.Filters.Add(new AuthorizeFilter());
+                options.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
 
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -96,7 +93,6 @@ namespace TBoard.WebApi
             {
                 endpoints.MapControllers();
             });
-
 
         }
     }

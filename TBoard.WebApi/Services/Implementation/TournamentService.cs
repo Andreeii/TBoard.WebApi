@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace TBoard.WebApi.Services.Implementation
     {
         private readonly ITournamentRepository tournamentRepository;
         private readonly IPlayerGameRepository playerGameRepository;
+        private readonly IGameRepository gameRepository;
         private readonly IMapper mapper;
 
 
-        public TournamentService(ITournamentRepository tournamentRepository, IPlayerGameRepository playerGameRepository, IMapper mapper)
+        public TournamentService(ITournamentRepository tournamentRepository, IGameRepository gameRepository,IPlayerGameRepository playerGameRepository, IMapper mapper)
         {
             this.tournamentRepository = tournamentRepository;
+            this.gameRepository = gameRepository;
             this.playerGameRepository = playerGameRepository;
             this.mapper = mapper;
 
@@ -91,8 +94,9 @@ namespace TBoard.WebApi.Services.Implementation
 
         public TournamentDto GetById(int tournamentId)
         {
-            var result = tournamentRepository.GetById(tournamentId);
-            return mapper.Map<TournamentDto>(result);
+            var tournament = tournamentRepository.GetById(tournamentId);
+            var tournamentDto = mapper.Map<TournamentDto>(tournament);
+            return mapper.Map<TournamentDto>(tournamentDto);
         }
 
         public TournamentDto AddTournament(TournamentDto tournament)

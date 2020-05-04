@@ -23,8 +23,8 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public Tournament Add(Tournament entity)
         {
-           var tournament = tournamentContext.Add(entity);
-           return tournament.Entity;
+            var tournament = tournamentContext.Add(entity);
+            return tournament.Entity;
         }
 
         public void DeleteById(int id)
@@ -52,7 +52,12 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public Tournament GetById(int id)
         {
-            return table.Find(id);
+            var tournament = table
+                .Include(tournament => tournament.Game)
+                .ThenInclude(game => game.PlayerGame)
+                .FirstOrDefault(x => x.Id == id);
+
+            return tournament;
         }
 
         public void Update(Tournament entity)

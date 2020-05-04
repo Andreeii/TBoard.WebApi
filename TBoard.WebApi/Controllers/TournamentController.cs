@@ -24,36 +24,11 @@ namespace TBoard.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<object>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
         {
-            //var tournament = new TournamentDto()
-            //{
-            //    Name = "Example2",
-            //    Game = new List<GameDto>()
-            //    {
-            //        new GameDto
-            //        {
-            //            PlayerGame = new List<PlayerGameDto>()
-            //            {
-            //                new PlayerGameDto
-            //                {
-            //                    playerId = 1,
-            //                    IsWinner =true
-            //                },
-            //                new PlayerGameDto
-            //                {
-            //                    playerId = 2,
-            //                    IsWinner =false
-            //                }
-            //            }
-            //        }
-            //    }
-            //};
-            //var result = tournamentService.AddTournament(tournament);
-
             return Ok(tournamentService.GetTournamentWithWinner( tournamentResourceParameters));
         }
 
         [HttpGet("{tournamentId}")]
-        public ActionResult<Tournament> GetById(int tournamentId)
+        public IActionResult GetById(int tournamentId)
         {
             if (tournamentService.GetById(tournamentId) == null)
             {
