@@ -34,7 +34,10 @@ namespace TBoard.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddDbContext<TournamentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TournamentContext>(options => 
+                {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                });
 
             services.AddIdentity<Player, Role>(options =>
             {
@@ -42,11 +45,11 @@ namespace TBoard.WebApi
             })
            .AddEntityFrameworkStores<TournamentContext>();
 
-            //var authOptions = services.ConfigureAuthOptions(Configuration);
-            //services.AddJwtAuthentication(authOptions);
+            var authOptions = services.ConfigureAuthOptions(Configuration);
+            services.AddJwtAuthentication(authOptions);
             services.AddControllers(options =>
             {
-                //options.Filters.Add(new AuthorizeFilter());
+                options.Filters.Add(new AuthorizeFilter());
                 options.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters();
 

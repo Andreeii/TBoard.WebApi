@@ -12,8 +12,9 @@ using System.Web.Http;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.Infrastructure.Configurations;
-using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 
 namespace TBoard.WebApi.Controllers
 {

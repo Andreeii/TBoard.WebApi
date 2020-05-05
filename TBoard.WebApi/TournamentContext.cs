@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using TBoard.WebApi.Schemas;
 
 namespace TBoard.WebApi
 {
-    public partial class TournamentContext : IdentityDbContext<Player, Role, int, UserClaim, PlayerRole, UserLogin, RoleClaim, UserToken>
+    public partial class TournamentContext : IdentityDbContext<Player, Role, int, PlayerClaim, PlayerRole, PlayerLogin, RoleClaim, PlayerToken>
     {
         public TournamentContext()
         {
@@ -87,9 +88,9 @@ namespace TBoard.WebApi
         private void ApplyIdentityMapConfiguration(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().ToTable("Players", SchemaConsts.Auth);
-            modelBuilder.Entity<UserClaim>().ToTable("UserClaims", SchemaConsts.Auth);
-            modelBuilder.Entity<UserLogin>().ToTable("UserLogins", SchemaConsts.Auth);
-            modelBuilder.Entity<UserToken>().ToTable("UserRoles", SchemaConsts.Auth);
+            modelBuilder.Entity<PlayerClaim>().ToTable("UserClaims", SchemaConsts.Auth);
+            modelBuilder.Entity<PlayerLogin>().ToTable("UserLogins", SchemaConsts.Auth);
+            modelBuilder.Entity<PlayerToken>().ToTable("UserRoles", SchemaConsts.Auth);
             modelBuilder.Entity<Role>().ToTable("Roles", SchemaConsts.Auth);
             modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims", SchemaConsts.Auth);
             modelBuilder.Entity<PlayerRole>().ToTable("PlayerRole", SchemaConsts.Auth);
@@ -392,6 +393,21 @@ namespace TBoard.WebApi
                          playerGame20, playerGame21, playerGame22, playerGame23, playerGame24);
 
         }
+
+        //public static async Task SeedPlayers(UserManager<Player> userManager)
+        //{
+        //    if (!userManager.Users.Any())
+        //    {
+        //        var user = new Player()
+        //        {
+        //            Name = "abc",
+        //            Surname = "aaa",
+        //            UserName = "a1",
+        //            Email = "aaa@gmail.com"
+        //        };
+        //        await userManager.CreateAsync(user, "admin1");
+        //    }
+        //}
     }
 }
 

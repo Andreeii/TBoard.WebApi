@@ -10,7 +10,7 @@ using TBoard.WebApi;
 namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200502101007_IdentityMigration")]
+    [Migration("20200505183104_IdentityMigration")]
     partial class IdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,50 @@ namespace TBoard.WebApi.Migrations
                 .HasAnnotation("ProductVersion", "5.0.0-preview.2.20159.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaims","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins","Auth");
+                });
 
             modelBuilder.Entity("TBoard.Entities.Auth.PlayerRole", b =>
                 {
@@ -34,6 +78,25 @@ namespace TBoard.WebApi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("PlayerRole","Auth");
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerToken", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserRoles","Auth");
                 });
 
             modelBuilder.Entity("TBoard.Entities.Auth.Role", b =>
@@ -86,69 +149,6 @@ namespace TBoard.WebApi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaims","Auth");
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClaims","Auth");
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogins","Auth");
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserToken", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("UserRoles","Auth");
                 });
 
             modelBuilder.Entity("TBoard.Entities.Game", b =>
@@ -316,7 +316,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "35536fe4-c577-4fc1-a149-327f16cc1f9d",
+                            ConcurrencyStamp = "2fdb5644-aa3e-4b10-8726-d3333aad571b",
                             Email = "aaa@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -332,7 +332,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6f48511b-c14c-46bc-8119-abb87c753038",
+                            ConcurrencyStamp = "d61a3f84-df73-4ab9-805f-408261f1dec7",
                             Email = "bbb@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -348,7 +348,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f6ffabc-4d4a-4ac4-b4d1-fec7100668ca",
+                            ConcurrencyStamp = "51b55c04-6985-4464-b07c-31c724d0ae04",
                             Email = "ccc@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -364,7 +364,7 @@ namespace TBoard.WebApi.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b39b49b-d1ec-4837-b054-c16d73506fe4",
+                            ConcurrencyStamp = "7a90a290-97db-4199-a4ae-9d473e9dfc1c",
                             Email = "ddd@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -609,6 +609,24 @@ namespace TBoard.WebApi.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerClaim", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerLogin", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TBoard.Entities.Auth.PlayerRole", b =>
                 {
                     b.HasOne("TBoard.Entities.Auth.Role", null)
@@ -624,38 +642,20 @@ namespace TBoard.WebApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TBoard.Entities.Auth.PlayerToken", b =>
+                {
+                    b.HasOne("TBoard.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TBoard.Entities.Auth.RoleClaim", b =>
                 {
                     b.HasOne("TBoard.Entities.Auth.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserClaim", b =>
-                {
-                    b.HasOne("TBoard.Entities.Player", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserLogin", b =>
-                {
-                    b.HasOne("TBoard.Entities.Player", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TBoard.Entities.Auth.UserToken", b =>
-                {
-                    b.HasOne("TBoard.Entities.Player", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

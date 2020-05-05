@@ -3,7 +3,7 @@
 
 namespace TBoard.Entities.Auth
 {
-    public class UserLogin : IdentityUserLogin<int>
+    public class PlayerToken : IdentityUserToken<int>
     {
     }
 }

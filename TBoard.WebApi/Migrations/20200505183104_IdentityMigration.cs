@@ -249,10 +249,10 @@ namespace TBoard.WebApi.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "35536fe4-c577-4fc1-a149-327f16cc1f9d", "aaa@gmail.com", false, false, null, "aaa", null, null, "admin", null, false, null, "aaa", false, "a1" },
-                    { 2, 0, "6f48511b-c14c-46bc-8119-abb87c753038", "bbb@gmail.com", false, false, null, "bbb", null, null, "admin", null, false, null, "bbb", false, "b1" },
-                    { 3, 0, "3f6ffabc-4d4a-4ac4-b4d1-fec7100668ca", "ccc@gmail.com", false, false, null, "ccc", null, null, "user", null, false, null, "ccc", false, "c1" },
-                    { 4, 0, "4b39b49b-d1ec-4837-b054-c16d73506fe4", "ddd@gmail.com", false, false, null, "ddd", null, null, "user", null, false, null, "ddd", false, "d1" }
+                    { 1, 0, "2fdb5644-aa3e-4b10-8726-d3333aad571b", "aaa@gmail.com", false, false, null, "aaa", null, null, "admin", null, false, null, "aaa", false, "a1" },
+                    { 2, 0, "d61a3f84-df73-4ab9-805f-408261f1dec7", "bbb@gmail.com", false, false, null, "bbb", null, null, "admin", null, false, null, "bbb", false, "b1" },
+                    { 3, 0, "51b55c04-6985-4464-b07c-31c724d0ae04", "ccc@gmail.com", false, false, null, "ccc", null, null, "user", null, false, null, "ccc", false, "c1" },
+                    { 4, 0, "7a90a290-97db-4199-a4ae-9d473e9dfc1c", "ddd@gmail.com", false, false, null, "ddd", null, null, "user", null, false, null, "ddd", false, "d1" }
                 });
 
             migrationBuilder.InsertData(

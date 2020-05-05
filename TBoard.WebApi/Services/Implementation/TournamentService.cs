@@ -19,7 +19,7 @@ namespace TBoard.WebApi.Services.Implementation
         private readonly IMapper mapper;
 
 
-        public TournamentService(ITournamentRepository tournamentRepository, IGameRepository gameRepository,IPlayerGameRepository playerGameRepository, IMapper mapper)
+        public TournamentService(ITournamentRepository tournamentRepository, IGameRepository gameRepository, IPlayerGameRepository playerGameRepository, IMapper mapper)
         {
             this.tournamentRepository = tournamentRepository;
             this.gameRepository = gameRepository;
