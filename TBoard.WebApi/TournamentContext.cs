@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,11 +17,11 @@ namespace TBoard.WebApi
         public TournamentContext()
         {
         }
+
         public TournamentContext(DbContextOptions<TournamentContext> dbContextOptions)
             : base(dbContextOptions)
         {
         }
-
 
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<Player> Player { get; set; }
@@ -30,10 +31,9 @@ namespace TBoard.WebApi
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Game>(entity =>
             {
-               
+
                 entity.HasOne(d => d.Tournament)
                     .WithMany(p => p.Game)
                     .HasForeignKey(d => d.TournamentId)
@@ -83,7 +83,8 @@ namespace TBoard.WebApi
 
 
             ApplyIdentityMapConfiguration(modelBuilder);
-            SeedData(modelBuilder);
+            //SeedData(modelBuilder);
+            
         }
         private void ApplyIdentityMapConfiguration(ModelBuilder modelBuilder)
         {
@@ -119,7 +120,7 @@ namespace TBoard.WebApi
             };
             var player2 = new Player()
             {
-                Id =2,
+                Id = 2,
                 Name = "bbb",
                 Surname = "bbb",
                 UserName = "b1",
@@ -128,7 +129,7 @@ namespace TBoard.WebApi
             };
             var player3 = new Player()
             {
-                Id =3,
+                Id = 3,
                 Name = "ccc",
                 Surname = "ccc",
                 UserName = "c1",
@@ -137,7 +138,7 @@ namespace TBoard.WebApi
             };
             var player4 = new Player()
             {
-                Id =4,
+                Id = 4,
                 Name = "ddd",
                 Surname = "ddd",
                 UserName = "d1",
@@ -383,8 +384,8 @@ namespace TBoard.WebApi
                 game1, game2, game3, game4, game5, game6,
                 game7, game8, game9, game10, game11, game12
                 );
-            modelBuilder.Entity<Player>()
-                .HasData(player1, player2, player3, player4);
+            //modelBuilder.Entity<Player>()
+            //    .HasData(player1, player2, player3, player4);
             modelBuilder.Entity<PlayerGame>()
                 .HasData(playerGame1, playerGame2, playerGame3, playerGame4, playerGame5,
                          playerGame6, playerGame7, playerGame8, playerGame9, playerGame10,
@@ -394,20 +395,45 @@ namespace TBoard.WebApi
 
         }
 
-        //public static async Task SeedPlayers(UserManager<Player> userManager)
-        //{
-        //    if (!userManager.Users.Any())
-        //    {
-        //        var user = new Player()
-        //        {
-        //            Name = "abc",
-        //            Surname = "aaa",
-        //            UserName = "a1",
-        //            Email = "aaa@gmail.com"
-        //        };
-        //        await userManager.CreateAsync(user, "admin1");
-        //    }
-        //}
+
+        public static void SeedPlayers(Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
+        {
+            if (!userManager.Users.Any())
+            {
+                var user = new Player()
+                {
+                    Name = "abc",
+                    Surname = "aaa",
+                    UserName = "a1",
+                    Email = "aaa@gmail.com"
+                };
+                var user2 = new Player()
+                {
+                    Name = "bbb",
+                    Surname = "bbb",
+                    UserName = "b1",
+                    Email = "bbb@gmail.com"
+                };
+                var user3 = new Player()
+                {
+                    Name = "ccc",
+                    Surname = "ccc",
+                    UserName = "c1",
+                    Email = "ccc@gmail.com"
+                };
+                var user4 = new Player()
+                {
+                    Name = "ddd",
+                    Surname = "ddd",
+                    UserName = "d1",
+                    Email = "ddd@gmail.com"
+                };
+                userManager.CreateAsync(user, "admin1");
+                userManager.CreateAsync(user2, "admin2");
+                userManager.CreateAsync(user3, "user1");
+                userManager.CreateAsync(user4, "user2");
+            }
+        }
     }
 }
 

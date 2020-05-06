@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +39,7 @@ namespace TBoard.WebApi
             {
                 options.Password.RequiredLength = 5;
             })
+           .AddUserManager<UserManager<Player>>()
            .AddEntityFrameworkStores<TournamentContext>();
 
             var authOptions = services.ConfigureAuthOptions(Configuration);

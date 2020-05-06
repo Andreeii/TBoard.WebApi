@@ -12,7 +12,7 @@ namespace TBoard.Infrastructure.Configurations
 
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+         return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
         }
     }
 }

@@ -15,6 +15,7 @@ using TBoard.Infrastructure.Configurations;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
+using System.Linq.Expressions;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -35,24 +36,31 @@ namespace TBoard.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(PlayerForLoginDto userForLoginDto)
         {
-            var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
-
-            if (checkingPasswordResult.Succeeded)
+            try
             {
-                var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
-                var jwtSecurityToken = new JwtSecurityToken(
-                     issuer: _authenticationOptions.Issuer,
-                     audience: _authenticationOptions.Audience,
-                     claims: new List<Claim>(),
-                     expires: DateTime.Now.AddDays(30),
-                     signingCredentials: signinCredentials
-                );
+                var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
 
-                var tokenHandler = new JwtSecurityTokenHandler();
+                if (checkingPasswordResult.Succeeded)
+                {
+                    var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
+                    var jwtSecurityToken = new JwtSecurityToken(
+                         issuer: _authenticationOptions.Issuer,
+                         audience: _authenticationOptions.Audience,
+                         claims: new List<Claim>(),
+                         expires: DateTime.Now.AddDays(30),
+                         signingCredentials: signinCredentials
+                    );
 
-                var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
+                    var tokenHandler = new JwtSecurityTokenHandler();
 
-                return Ok(new { AccessToken = encodedToken });
+                    var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
+
+                    return Ok(new { AccessToken = encodedToken });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return Unauthorized();
         }
