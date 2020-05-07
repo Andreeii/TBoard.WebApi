@@ -9,18 +9,14 @@ namespace TBoard.WebApi.Repositories.Interfaces
 {
     public interface IPlayerRepository
     {
-        //find objects
         Player GetById(int id);
 
-        //add objects
-        void Add(Player entity);
+        public Player Add(Player player);
 
-        //remove objects
         void DeleteById(int id);
 
         IEnumerable<Player> GetAll();
         IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters);
-        //update
         void Update(Player entity);
 
         bool Exists(int id);

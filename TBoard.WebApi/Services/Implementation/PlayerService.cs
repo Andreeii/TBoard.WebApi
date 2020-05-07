@@ -15,7 +15,6 @@ namespace TBoard.WebApi.Services.Implementation
         private readonly IPlayerRepository playerRepository;
         private readonly IMapper mapper;
 
-
         public PlayerService(IPlayerRepository playerRepository, IMapper mapper)
         {
             this.playerRepository = playerRepository;
@@ -48,7 +47,7 @@ namespace TBoard.WebApi.Services.Implementation
             return mapper.Map<PlayerDto>(result);
         }
 
-        public Player AddPlayer(PlayerDto player)
+        public Player AddPlayer(PlayerForCreationDto player)
         {
             var playerEntity = mapper.Map<Player>(player);
             playerRepository.Add(playerEntity);

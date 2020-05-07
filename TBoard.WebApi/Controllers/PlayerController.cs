@@ -17,7 +17,6 @@ namespace TBoard.WebApi.Controllers
     {
 
         private readonly IPlayerService playerService;
-
         public PlayerController(IPlayerService playerService)
         {
             this.playerService = playerService;
@@ -38,13 +37,6 @@ namespace TBoard.WebApi.Controllers
                 return NotFound();
             }
             return Ok(playerService.GetById(playerId));
-        }
-
-        [HttpPost]
-        public ActionResult<Tournament> CreatePlayer(PlayerDto player)
-        {
-            return Ok(playerService.AddPlayer(player));
-
         }
 
         [HttpDelete("{playerId}")]

@@ -15,7 +15,6 @@ using TBoard.Infrastructure.Configurations;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
-using System.Linq.Expressions;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -23,13 +22,16 @@ namespace TBoard.WebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly AuthOptions _authenticationOptions;
-        private readonly SignInManager<Player> _signInManager;
+        private readonly AuthOptions authenticationOptions;
+        private readonly SignInManager<Player> signInManager;
+        private readonly UserManager<Player> userManager;
 
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager)
+        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager,UserManager<Player> userManager)
         {
-            _authenticationOptions = authenticationOptions.Value;
-            _signInManager = signInManager;
+            this.authenticationOptions = authenticationOptions.Value;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+
         }
 
         [AllowAnonymous]
@@ -38,14 +40,14 @@ namespace TBoard.WebApi.Controllers
         {
             try
             {
-                var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
+                var checkingPasswordResult = await signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
 
                 if (checkingPasswordResult.Succeeded)
                 {
-                    var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
+                    var signinCredentials = new SigningCredentials(authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
                     var jwtSecurityToken = new JwtSecurityToken(
-                         issuer: _authenticationOptions.Issuer,
-                         audience: _authenticationOptions.Audience,
+                         issuer: authenticationOptions.Issuer,
+                         audience: authenticationOptions.Audience,
                          claims: new List<Claim>(),
                          expires: DateTime.Now.AddDays(30),
                          signingCredentials: signinCredentials
@@ -64,5 +66,21 @@ namespace TBoard.WebApi.Controllers
             }
             return Unauthorized();
         }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> CreatePlayer(PlayerForCreationDto player)
+        {
+            var user = new Player
+            {
+                Name = player.Name,
+                Surname = player.Surname,
+                UserName = player.UserName,
+                Email = player.Email
+            };
+            var result = await userManager.CreateAsync(user, player.Password);
+            return Ok(result);
+        }
+
     }
 }

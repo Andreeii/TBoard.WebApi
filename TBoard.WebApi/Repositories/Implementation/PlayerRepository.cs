@@ -21,13 +21,11 @@ namespace TBoard.WebApi.Repositories.Implementation
             table = context.Set<Player>();
         }
 
-        public void Add(Player entity)
+        public Player Add(Player player)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            tournamentContext.Add(entity);
+
+            var result = tournamentContext.Add(player);
+            return result.Entity;
         }
 
         public void DeleteById(int id)

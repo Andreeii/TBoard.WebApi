@@ -5,11 +5,8 @@ using System.Text;
 
 namespace TBoard.Dto
 {
-    public class PlayerDto
+    public class PlayerForCreationDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
@@ -19,6 +16,7 @@ namespace TBoard.Dto
         [Required]
         public string UserName { get; set; }
 
+        [Required]
         public string Password { get; set; }
 
         [Required]
