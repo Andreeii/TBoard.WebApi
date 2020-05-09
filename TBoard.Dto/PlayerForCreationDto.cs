@@ -21,6 +21,8 @@ namespace TBoard.Dto
 
         [Required]
         public string Email { get; set; }
+
+        public string Role { get; set; }
         public DateTime RegistrationDate { get; set; }
         public int? PlayerRole { get; set; }
     }

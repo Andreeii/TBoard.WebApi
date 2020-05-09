@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Entities;
+using TBoard.Entities.Auth;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.ResourceParameters;
 
@@ -13,12 +14,14 @@ namespace TBoard.WebApi.Repositories.Implementation
     {
         protected readonly TournamentContext tournamentContext;
 
-        protected DbSet<Player> table;
+        protected DbSet<Player> playerTable;
+        protected DbSet<Role> rolesTable;
 
         public PlayerRepository(TournamentContext context)
         {
             tournamentContext = context;
-            table = context.Set<Player>();
+            playerTable = context.Set<Player>();
+            rolesTable = context.Set<Role>();
         }
 
         public Player Add(Player player)
@@ -30,13 +33,13 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public void DeleteById(int id)
         {
-            Player existing = table.Find(id);
-            table.Remove(existing);
+            Player existing = playerTable.Find(id);
+            playerTable.Remove(existing);
         }
 
         public bool Exists(int id)
         {
-            if (table.Find(id) != null)
+            if (playerTable.Find(id) != null)
             {
                 return true;
             }
@@ -47,7 +50,12 @@ namespace TBoard.WebApi.Repositories.Implementation
         }
         public IEnumerable<Player> GetAll()
         {
-            return table.ToList();
+            return playerTable.ToList();
+        }
+
+        public IEnumerable<Role> GetAllRoles()
+        {
+            return rolesTable;
         }
 
         public IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters)
@@ -68,7 +76,7 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public Player GetById(int id)
         {
-            return table.Find(id);
+            return playerTable.Find(id);
         }
 
         public void Update(Player entity)

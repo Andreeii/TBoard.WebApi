@@ -13,12 +13,12 @@ namespace TBoard.WebApi.Repositories.Implementation
     {
         protected readonly TournamentContext tournamentContext;
 
-        protected DbSet<Tournament> table;
+        protected DbSet<Tournament> tournamentTable;
 
         public TournamentRepository(TournamentContext context)
         {
             tournamentContext = context;
-            table = context.Set<Tournament>();
+            tournamentTable = context.Set<Tournament>();
         }
 
         public Tournament Add(Tournament entity)
@@ -29,13 +29,13 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public void DeleteById(int id)
         {
-            Tournament existing = table.Find(id);
-            table.Remove(existing);
+            Tournament existing = tournamentTable.Find(id);
+            tournamentTable.Remove(existing);
         }
 
         public bool Exists(int id)
         {
-            if (table.Find(id) != null)
+            if (tournamentTable.Find(id) != null)
             {
                 return true;
             }
@@ -46,13 +46,13 @@ namespace TBoard.WebApi.Repositories.Implementation
         }
         public IEnumerable<Tournament> GetAll()
         {
-            return table;
+            return tournamentTable;
         }
 
 
         public Tournament GetById(int id)
         {
-            var tournament = table
+            var tournament = tournamentTable
                 .Include(tournament => tournament.Game)
                 .ThenInclude(game => game.PlayerGame)
                 .FirstOrDefault(x => x.Id == id);

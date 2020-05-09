@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
+using TBoard.Entities.Auth;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.ResourceParameters;
 
@@ -24,6 +25,11 @@ namespace TBoard.WebApi.Services.Implementation
         {
             playerRepository.DeleteById(id);
             playerRepository.SaveChanges();
+        }
+
+        public IEnumerable<Role> GetAllRoles()
+        {
+           return  playerRepository.GetAllRoles().ToList();
         }
 
         public IEnumerable<PlayerDto> GetAll(PlayerResourceParameters playerResourceParameters)

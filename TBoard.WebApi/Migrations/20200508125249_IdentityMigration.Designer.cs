@@ -10,7 +10,7 @@ using TBoard.WebApi;
 namespace TBoard.WebApi.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20200506185857_IdentityMigration")]
+    [Migration("20200508125249_IdentityMigration")]
     partial class IdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

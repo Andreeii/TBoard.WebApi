@@ -6,8 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
+using TBoard.Entities.Auth;
 using TBoard.WebApi.ResourceParameters;
 using TBoard.WebApi.Services.Implementation;
+using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
+
 
 namespace TBoard.WebApi.Controllers
 {
@@ -49,6 +52,13 @@ namespace TBoard.WebApi.Controllers
         public ActionResult<TournamentDto> UpdatePlayer(PlayerDto player)
         {
             return Ok(playerService.Update(player));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("roles")]
+        public ActionResult<Role> GetRoles()
+        {
+            return Ok(playerService.GetAllRoles());
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Entities;
+using TBoard.Entities.Auth;
 using TBoard.WebApi.ResourceParameters;
 
 namespace TBoard.WebApi.Repositories.Interfaces
@@ -12,6 +13,7 @@ namespace TBoard.WebApi.Repositories.Interfaces
         Player GetById(int id);
 
         public Player Add(Player player);
+        public IEnumerable<Role> GetAllRoles();
 
         void DeleteById(int id);
 
