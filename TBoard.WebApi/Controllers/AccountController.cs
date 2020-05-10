@@ -104,7 +104,7 @@ namespace TBoard.WebApi.Controllers
             try
             {
                 var result = await userManager.CreateAsync(user, player.Password);
-                await userManager.AddToRoleAsync(user,playerRole);
+                await userManager.AddToRoleAsync(user, playerRole);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -114,20 +114,59 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost("edit")]
-        public async Task<IActionResult> EditPlayer(PlayerForCreationDto player)
+        public async Task<IActionResult> EditPlayer(PlayerForUpdateDto player)
         {
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
 
-            user.Name = player.Name;
-            user.Surname = player.Surname;
-            user.UserName = player.UserName;
-            user.Email = player.Email;
+            if (player.Name == "")
+            {
+                user.Name = user.Name;
+            }
+            else
+            {
+                user.Name = player.Name;
+            }
 
+            if (player.Surname == "")
+            {
+                user.Surname = user.Surname;
+            }
+            else
+            {
+                user.Surname = player.Surname;
+            }
+
+            if (player.UserName == "")
+            {
+                user.UserName = user.UserName;
+            }
+            else
+            {
+                user.UserName = player.UserName;
+            }
+
+            if (player.Email == "")
+            {
+                user.Email = user.Email;
+            }
+            else
+            {
+                user.Email = player.Email;
+            }
             var result = await userManager.UpdateAsync(user);
-
             return Ok(result);
-           
+
+        }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto passwordDto)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = await userManager.FindByIdAsync(userId);
+            var result = await userManager.ChangePasswordAsync(user, passwordDto.CurentPassword, passwordDto.NewPassword);
+            return Ok(result);
+
         }
 
 

@@ -47,28 +47,12 @@ namespace TBoard.WebApi.Services.Implementation
             }
         }
 
-        public PlayerForCreationDto GetById(int playerId)
+        public PlayerForUpdateDto GetById(int playerId)
         {
             var result = playerRepository.GetById(playerId);
-            return mapper.Map<PlayerForCreationDto>(result);
+            return mapper.Map<PlayerForUpdateDto>(result);
         }
 
-        public Player AddPlayer(PlayerForCreationDto player)
-        {
-            var playerEntity = mapper.Map<Player>(player);
-            playerRepository.Add(playerEntity);
-            playerRepository.SaveChanges();
-            var playerToreturn = mapper.Map<Player>(playerEntity);
-            return playerToreturn;
-        }
 
-        public PlayerDto Update(PlayerDto player)
-        {
-            var playerEntity = mapper.Map<Player>(player);
-            playerRepository.Update(playerEntity);
-            playerRepository.SaveChanges();
-            var playerToReturn = mapper.Map<PlayerDto>(playerEntity);
-            return playerToReturn;
-        }
     }
 }

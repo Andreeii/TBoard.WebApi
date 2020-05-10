@@ -24,30 +24,12 @@ namespace TBoard.WebApi.Repositories.Implementation
             rolesTable = context.Set<Role>();
         }
 
-        public Player Add(Player player)
-        {
-
-            var result = tournamentContext.Add(player);
-            return result.Entity;
-        }
-
         public void DeleteById(int id)
         {
             Player existing = playerTable.Find(id);
             playerTable.Remove(existing);
         }
 
-        public bool Exists(int id)
-        {
-            if (playerTable.Find(id) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public IEnumerable<Player> GetAll()
         {
             return playerTable.ToList();
@@ -79,10 +61,6 @@ namespace TBoard.WebApi.Repositories.Implementation
             return playerTable.Find(id);
         }
 
-        public void Update(Player entity)
-        {
-            tournamentContext.Entry(entity).State = EntityState.Modified;
-        }
         public void SaveChanges()
         {
             tournamentContext.SaveChanges();

@@ -12,17 +12,13 @@ namespace TBoard.WebApi.Repositories.Interfaces
     {
         Player GetById(int id);
 
-        public Player Add(Player player);
-        public IEnumerable<Role> GetAllRoles();
+        IEnumerable<Role> GetAllRoles();
 
         void DeleteById(int id);
 
         IEnumerable<Player> GetAll();
         IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters);
-        void Update(Player entity);
 
-        bool Exists(int id);
-
-        public void SaveChanges();
+        void SaveChanges();
     }
 }

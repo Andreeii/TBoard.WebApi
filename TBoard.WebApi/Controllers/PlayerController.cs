@@ -34,7 +34,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpGet("byId")]
-        public ActionResult<PlayerForCreationDto> GetById()
+        public ActionResult<PlayerForUpdateDto> GetById()
         {
             var playerId = User.Identity.GetUserId();
             return Ok(playerService.GetById(Int32.Parse(playerId)));
@@ -46,11 +46,6 @@ namespace TBoard.WebApi.Controllers
             playerService.DeleteById(playerId);
         }
 
-        [HttpPut("{playerId}")]
-        public ActionResult<TournamentDto> UpdatePlayer(PlayerDto player)
-        {
-            return Ok(playerService.Update(player));
-        }
 
         [AllowAnonymous]
         [HttpGet("roles")]

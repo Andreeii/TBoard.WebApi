@@ -13,11 +13,9 @@ namespace TBoard.WebApi.Services.Implementation
     {
 
         public IEnumerable<PlayerDto> GetAll(PlayerResourceParameters playerResourceParameters);
-        public PlayerForCreationDto GetById(int id);
+        public PlayerForUpdateDto GetById(int id);
         public void DeleteById(int id);
-        public Player AddPlayer(PlayerForCreationDto player);
         public IEnumerable<Role> GetAllRoles();
 
-        public PlayerDto Update(PlayerDto entity);
     }
 }
