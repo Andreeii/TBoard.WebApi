@@ -47,10 +47,10 @@ namespace TBoard.WebApi.Services.Implementation
             }
         }
 
-        public PlayerDto GetById(int playerId)
+        public PlayerForCreationDto GetById(int playerId)
         {
             var result = playerRepository.GetById(playerId);
-            return mapper.Map<PlayerDto>(result);
+            return mapper.Map<PlayerForCreationDto>(result);
         }
 
         public Player AddPlayer(PlayerForCreationDto player)

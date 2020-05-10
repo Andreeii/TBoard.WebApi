@@ -13,7 +13,7 @@ namespace TBoard.WebApi.Services.Implementation
     {
 
         public IEnumerable<PlayerDto> GetAll(PlayerResourceParameters playerResourceParameters);
-        public PlayerDto GetById(int id);
+        public PlayerForCreationDto GetById(int id);
         public void DeleteById(int id);
         public Player AddPlayer(PlayerForCreationDto player);
         public IEnumerable<Role> GetAllRoles();

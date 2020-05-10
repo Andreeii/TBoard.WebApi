@@ -24,6 +24,7 @@ namespace TBoard.WebApi.Extensions
 
                     await Seed.SeedPlayers(userManager);
                     await Seed.SeedTournaments(context);
+                    await Seed.SeedRoles(context);
 
                 }
                 catch (Exception ex)

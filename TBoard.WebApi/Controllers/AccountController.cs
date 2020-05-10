@@ -16,8 +16,8 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 using AutoMapper;
-using HttpPutAttribute = Microsoft.AspNetCore.Mvc.HttpPutAttribute;
 using System.Linq;
+using Microsoft.AspNet.Identity;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -27,11 +27,11 @@ namespace TBoard.WebApi.Controllers
     {
         private readonly AuthOptions authenticationOptions;
         private readonly SignInManager<Player> signInManager;
-        private readonly UserManager<Player> userManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<Player> userManager;
         private readonly IMapper mapper;
 
 
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager, UserManager<Player> userManager, IMapper mapper)
+        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager, Microsoft.AspNetCore.Identity.UserManager<Player> userManager, IMapper mapper)
         {
             this.authenticationOptions = authenticationOptions.Value;
             this.signInManager = signInManager;
@@ -60,7 +60,8 @@ namespace TBoard.WebApi.Controllers
                          audience: authenticationOptions.Audience,
                          claims: new List<Claim>()
                          {
-                             new Claim(options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
+                             new Claim(options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault()),
+                             new Claim(options.ClaimsIdentity.UserIdClaimType,user.Id.ToString())
                          },
                          expires: DateTime.Now.AddDays(30),
                          signingCredentials: signinCredentials
@@ -112,7 +113,24 @@ namespace TBoard.WebApi.Controllers
             }
         }
 
+        [HttpPost("edit")]
+        public async Task<IActionResult> EditPlayer(PlayerForCreationDto player)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = await userManager.FindByIdAsync(userId);
 
- 
+            user.Name = player.Name;
+            user.Surname = player.Surname;
+            user.UserName = player.UserName;
+            user.Email = player.Email;
+
+            var result = await userManager.UpdateAsync(user);
+
+            return Ok(result);
+           
+        }
+
+
+
     }
 }

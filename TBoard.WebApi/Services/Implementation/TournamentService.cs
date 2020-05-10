@@ -91,6 +91,33 @@ namespace TBoard.WebApi.Services.Implementation
             return q2.ToList();
         }
 
+        public object GetWinnedTournaments(int playerId)
+        {
+            var q1 = playerGameRepository.GetAll()
+            .Where(x => x.IsWinner == true)
+            .Where(x => x.PlayerId == playerId)
+            .GroupBy(x => new { x.PlayerId, x.Game.TournamentId })
+            .Select(x => new
+            {
+                PlayerId = x.Key.PlayerId,
+                TournamentId = x.Key.TournamentId,
+                Wins = x.Count()
+
+            });
+
+            var q2 = playerGameRepository.GetAll()
+                .Where(x => x.IsWinner == true)
+                .GroupBy(x => new { x.Game.TournamentId, x.Game.Tournament.Name, x.Player.UserName })
+                .Select(x => new
+                {
+                    TournamentId = x.Key.TournamentId,
+                    NumberOfWins = x.Count(),
+                    PlayerName = x.Key.UserName,
+                    TournamentName = x.Key.Name
+                })
+                .Where(x => x.NumberOfWins == q1.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins));
+            return q2.ToList();
+        }
 
         public TournamentDto GetById(int tournamentId)
         {

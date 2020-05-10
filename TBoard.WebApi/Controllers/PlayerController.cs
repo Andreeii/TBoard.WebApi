@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -32,14 +33,11 @@ namespace TBoard.WebApi.Controllers
             return Ok(playerService.GetAll(playerResourceParameters));
         }
 
-        [HttpGet("{playerId}")]
-        public ActionResult<Tournament> GetById(int playerId)
+        [HttpGet("byId")]
+        public ActionResult<PlayerForCreationDto> GetById()
         {
-            if (playerService.GetById(playerId) == null)
-            {
-                return NotFound();
-            }
-            return Ok(playerService.GetById(playerId));
+            var playerId = User.Identity.GetUserId();
+            return Ok(playerService.GetById(Int32.Parse(playerId)));
         }
 
         [HttpDelete("{playerId}")]

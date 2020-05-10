@@ -16,6 +16,8 @@ namespace TBoard.WebApi.Services.Implementation
         public TournamentDto AddTournament(TournamentDto entity);
         public object GetTournamentWithWinner(TournamentResourceParameters tournamentResourceParameters);
         public TournamentDto Update(TournamentDto entity);
+        public object GetWinnedTournaments(int playerId);
+
 
     }
 }

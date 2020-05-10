@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,15 @@ namespace TBoard.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<object>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
         {
-            return Ok(tournamentService.GetTournamentWithWinner( tournamentResourceParameters));
+            return Ok(tournamentService.GetTournamentWithWinner(tournamentResourceParameters));
+        }
+
+        [HttpGet("winned")]
+        public ActionResult<IEnumerable<object>> GetWinnedTournaments()
+        {
+            var playerId = User.Identity.GetUserId();
+
+            return Ok(tournamentService.GetWinnedTournaments(Int32.Parse(playerId)));
         }
 
         [HttpGet("{tournamentId}")]

@@ -16,7 +16,7 @@ namespace TBoard.Dto
         [Required]
         public string UserName { get; set; }
 
-        [Required]
+       // [Required]
         public string Password { get; set; }
 
         [Required]
@@ -24,6 +24,5 @@ namespace TBoard.Dto
 
         public string Role { get; set; }
         public DateTime RegistrationDate { get; set; }
-        public int? PlayerRole { get; set; }
     }
 }
