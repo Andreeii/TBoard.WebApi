@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,11 @@ using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
+using TBoard.Infrastructure.Models;
+using TBoard.WebApi.Extensions;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.ResourceParameters;
+using TBoard.WebApi.Services.Interfaces;
 
 namespace TBoard.WebApi.Services.Implementation
 {
@@ -29,7 +33,7 @@ namespace TBoard.WebApi.Services.Implementation
 
         public IEnumerable<Role> GetAllRoles()
         {
-           return  playerRepository.GetAllRoles().ToList();
+            return playerRepository.GetAllRoles().ToList();
         }
 
         public IEnumerable<PlayerDto> GetAll(PlayerResourceParameters playerResourceParameters)
@@ -53,6 +57,11 @@ namespace TBoard.WebApi.Services.Implementation
             return mapper.Map<PlayerForUpdateDto>(result);
         }
 
+        //public async Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(this IService service, PagedRequest pagedRequest) where TEntity : IdentityUser<int>
+        //                                                                                                                       where TDto : class
+        //{
+        //    return await playerRepository.GetAll().CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, mapper);
+        //}
 
     }
 }

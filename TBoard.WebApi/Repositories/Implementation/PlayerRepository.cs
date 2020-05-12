@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
+using TBoard.Infrastructure.Models;
+using TBoard.WebApi.Extensions;
 using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.ResourceParameters;
 
@@ -13,15 +17,18 @@ namespace TBoard.WebApi.Repositories.Implementation
     public class PlayerRepository : IPlayerRepository
     {
         protected readonly TournamentContext tournamentContext;
+        private readonly IMapper mapper;
+
 
         protected DbSet<Player> playerTable;
         protected DbSet<Role> rolesTable;
 
-        public PlayerRepository(TournamentContext context)
+        public PlayerRepository(TournamentContext context,IMapper mapper)
         {
             tournamentContext = context;
             playerTable = context.Set<Player>();
             rolesTable = context.Set<Role>();
+            this.mapper = mapper;
         }
 
         public void DeleteById(int id)
@@ -30,9 +37,9 @@ namespace TBoard.WebApi.Repositories.Implementation
             playerTable.Remove(existing);
         }
 
-        public IEnumerable<Player> GetAll()
+        public IQueryable<Player> GetAll()
         {
-            return playerTable.ToList();
+            return playerTable;
         }
 
         public IEnumerable<Role> GetAllRoles()
@@ -56,6 +63,11 @@ namespace TBoard.WebApi.Repositories.Implementation
             return collection.ToList();
         }
 
+        public async Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
+                                                                                                        where TDto : class
+        {
+            return await tournamentContext.Set<TEntity>().CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, mapper);
+        }
         public Player GetById(int id)
         {
             return playerTable.Find(id);

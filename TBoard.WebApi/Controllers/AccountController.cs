@@ -15,7 +15,6 @@ using TBoard.Infrastructure.Configurations;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
-using AutoMapper;
 using System.Linq;
 using Microsoft.AspNet.Identity;
 
@@ -28,16 +27,12 @@ namespace TBoard.WebApi.Controllers
         private readonly AuthOptions authenticationOptions;
         private readonly SignInManager<Player> signInManager;
         private readonly Microsoft.AspNetCore.Identity.UserManager<Player> userManager;
-        private readonly IMapper mapper;
 
-
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager, Microsoft.AspNetCore.Identity.UserManager<Player> userManager, IMapper mapper)
+        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager, Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
         {
             this.authenticationOptions = authenticationOptions.Value;
             this.signInManager = signInManager;
             this.userManager = userManager;
-            this.mapper = mapper;
-
         }
 
         [AllowAnonymous]
@@ -119,41 +114,11 @@ namespace TBoard.WebApi.Controllers
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
 
-            if (player.Name == "")
-            {
-                user.Name = user.Name;
-            }
-            else
-            {
-                user.Name = player.Name;
-            }
+            user.Name = player.Name;
+            user.Surname = player.Surname;
+            user.UserName = player.UserName;
+            user.Email = player.Email;
 
-            if (player.Surname == "")
-            {
-                user.Surname = user.Surname;
-            }
-            else
-            {
-                user.Surname = player.Surname;
-            }
-
-            if (player.UserName == "")
-            {
-                user.UserName = user.UserName;
-            }
-            else
-            {
-                user.UserName = player.UserName;
-            }
-
-            if (player.Email == "")
-            {
-                user.Email = user.Email;
-            }
-            else
-            {
-                user.Email = player.Email;
-            }
             var result = await userManager.UpdateAsync(user);
             return Ok(result);
 

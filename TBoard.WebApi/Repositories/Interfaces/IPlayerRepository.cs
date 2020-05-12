@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
+using TBoard.Infrastructure.Models;
 using TBoard.WebApi.ResourceParameters;
 
 namespace TBoard.WebApi.Repositories.Interfaces
@@ -16,8 +18,11 @@ namespace TBoard.WebApi.Repositories.Interfaces
 
         void DeleteById(int id);
 
-        IEnumerable<Player> GetAll();
+        IQueryable<Player> GetAll();
         IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters);
+
+        Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
+                                                                                           where TDto : class;
 
         void SaveChanges();
     }

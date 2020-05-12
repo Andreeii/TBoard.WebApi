@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TBoard.Dto;
-using TBoard.Entities;
 using TBoard.Entities.Auth;
 using TBoard.WebApi.ResourceParameters;
 
-namespace TBoard.WebApi.Services.Implementation
+namespace TBoard.WebApi.Services.Interfaces
 {
     public interface IPlayerService
     {
@@ -16,6 +12,9 @@ namespace TBoard.WebApi.Services.Implementation
         public PlayerForUpdateDto GetById(int id);
         public void DeleteById(int id);
         public IEnumerable<Role> GetAllRoles();
+
+        //Task<PaginatedResult<TDto>> GetPagedData(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
+        //                                                                                 where TDto : class;
 
     }
 }
