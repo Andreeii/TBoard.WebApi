@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using TBoard.Entities;
 
 namespace TBoard.Dto
 {
@@ -10,7 +11,6 @@ namespace TBoard.Dto
     {
         public int Id { get; set; }
         public int TournamentId { get; set; }
-
         public ICollection<PlayerGameDto> PlayerGame{ get; set; }
     }
 }

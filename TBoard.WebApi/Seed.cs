@@ -78,7 +78,7 @@ namespace TBoard.WebApi
                 await context.SaveChangesAsync();
             }
         }
-     
+
 
         public static async Task SeedPlayers(Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
         {
@@ -90,7 +90,7 @@ namespace TBoard.WebApi
                     Surname = "aaa",
                     UserName = "a1",
                     Email = "aaa@gmail.com",
-                    
+
                 };
                 var player2 = new Player()
                 {
@@ -131,5 +131,6 @@ namespace TBoard.WebApi
                 await context.SaveChangesAsync();
             }
         }
+
     }
 }

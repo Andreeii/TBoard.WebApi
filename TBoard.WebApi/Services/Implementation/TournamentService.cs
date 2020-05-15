@@ -123,7 +123,7 @@ namespace TBoard.WebApi.Services.Implementation
         {
             var tournament = tournamentRepository.GetById(tournamentId);
             var tournamentDto = mapper.Map<TournamentDto>(tournament);
-            return mapper.Map<TournamentDto>(tournamentDto);
+            return tournamentDto;
         }
 
         public TournamentDto AddTournament(TournamentDto tournament)

@@ -61,7 +61,7 @@ namespace TBoard.WebApi.Controllers
            
         }
 
-        [HttpPut("{tournamentId}")]
+        [HttpPut]
         public ActionResult<TournamentDto> UpdateTournament(TournamentDto tournament)
         {
             return Ok(tournamentService.Update(tournament));

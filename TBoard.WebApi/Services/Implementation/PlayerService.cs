@@ -25,10 +25,12 @@ namespace TBoard.WebApi.Services.Implementation
             this.playerRepository = playerRepository;
             this.mapper = mapper;
         }
-        public void DeleteById(int id)
+        public Player DeleteById(int id)
         {
-            playerRepository.DeleteById(id);
+            var deletedPlayer = playerRepository.DeleteById(id);
             playerRepository.SaveChanges();
+            return deletedPlayer;
+
         }
 
         public IEnumerable<Role> GetAllRoles()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TBoard.Entities;
 
 namespace TBoard.Dto
 {
@@ -10,5 +11,6 @@ namespace TBoard.Dto
 
         public ICollection<GameDto> Game { get; set; }
         public DateTime CreationDate { get; set; }
+
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,13 +15,14 @@ namespace TBoard.WebApi.Repositories.Interfaces
 
         IEnumerable<Role> GetAllRoles();
 
-        void DeleteById(int id);
+        Player DeleteById(int id);
 
         IQueryable<Player> GetAll();
         IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters);
 
         Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
                                                                                            where TDto : class;
+        public bool CheckUserName(string userName);
 
         void SaveChanges();
     }

@@ -25,7 +25,7 @@ namespace TBoard.WebApi.Controllers
         private readonly IPlayerService playerService;
         private readonly IPlayerRepository playerRepository;
 
-        public PlayerController(IPlayerService playerService,IPlayerRepository playerRepository)
+        public PlayerController(IPlayerService playerService, IPlayerRepository playerRepository)
         {
             this.playerService = playerService;
             this.playerRepository = playerRepository;
@@ -45,10 +45,23 @@ namespace TBoard.WebApi.Controllers
             return Ok(playerService.GetById(Int32.Parse(playerId)));
         }
 
-        [HttpDelete("{playerId}")]
-        public void DeleteById(int playerId)
+
+        [HttpGet("{playerId}")]
+        public ActionResult<PlayerForUpdateDto> GetPlayerById(int playerId)
         {
-            playerService.DeleteById(playerId);
+            return Ok(playerService.GetById(playerId));
+        }
+
+        [HttpDelete("{playerId}")]
+        public ActionResult<Player> DeleteById(int playerId)
+        {
+            return Ok(playerService.DeleteById(playerId));
+        }
+
+        [HttpPost("checkUserName")]
+        public ActionResult<bool>CheckUserName(string checkUserName)
+        {
+            return Ok(playerRepository.CheckUserName(checkUserName));
         }
 
 

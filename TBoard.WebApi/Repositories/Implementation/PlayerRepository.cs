@@ -31,10 +31,19 @@ namespace TBoard.WebApi.Repositories.Implementation
             this.mapper = mapper;
         }
 
-        public void DeleteById(int id)
+        public Player DeleteById(int id)
         {
             Player existing = playerTable.Find(id);
+
+            var player = playerTable
+             .Include(player => player.PlayerGame)
+             .FirstOrDefault(x => x.Id == id);
+
+            if(player.PlayerGame.Count == 0 )
+            {
             playerTable.Remove(existing);
+            }
+            return existing;
         }
 
         public IQueryable<Player> GetAll()
@@ -71,6 +80,20 @@ namespace TBoard.WebApi.Repositories.Implementation
         public Player GetById(int id)
         {
             return playerTable.Find(id);
+        }
+
+
+        public bool CheckUserName(string userName)
+        {
+            foreach (var item in playerTable)
+            {
+                if(item.UserName == userName)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void SaveChanges()

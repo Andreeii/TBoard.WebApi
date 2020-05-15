@@ -62,7 +62,8 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public void Update(Tournament entity)
         {
-            tournamentContext.Entry(entity).State = EntityState.Modified;
+            entity.CreationDate = DateTime.Now;
+            tournamentContext.Update(entity);
         }
         public void SaveChanges()
         {
