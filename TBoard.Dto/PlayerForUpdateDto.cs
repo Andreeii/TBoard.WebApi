@@ -17,5 +17,7 @@ namespace TBoard.Dto
 
         //public string Role { get; set; }
         public DateTime RegistrationDate { get; set; }
+
+        public string ProfileImage { get; set; }
     }
 }

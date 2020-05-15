@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace TBoard.Dto
 {
@@ -24,5 +23,8 @@ namespace TBoard.Dto
 
         public string Role { get; set; }
         public DateTime RegistrationDate { get; set; }
+
+        public string ProfileImage { get; set; }
+
     }
 }

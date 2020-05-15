@@ -26,5 +26,9 @@
     <ProjectReference Include="..\TBoard.Infrastructure\TBoard.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\ProfileImage\" />
+  </ItemGroup>
+
 
 </Project>

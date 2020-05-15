@@ -10,6 +10,8 @@ namespace TBoard.Entities
         public string Surname { get; set; }
 
         public DateTime RegistrationDate { get; set; }
+
+        public string ProfileImage { get; set; }
         public virtual ICollection<PlayerGame> PlayerGame { get; set; }
     }
 }

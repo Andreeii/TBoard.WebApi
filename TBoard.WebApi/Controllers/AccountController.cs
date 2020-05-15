@@ -17,6 +17,11 @@ using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 using System.Linq;
 using Microsoft.AspNet.Identity;
+using System.Net.Http;
+using System.IO;
+using System.Net.Mime;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -28,7 +33,9 @@ namespace TBoard.WebApi.Controllers
         private readonly SignInManager<Player> signInManager;
         private readonly Microsoft.AspNetCore.Identity.UserManager<Player> userManager;
 
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<Player> signInManager, Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
+        public AccountController(IOptions<AuthOptions> authenticationOptions,
+            SignInManager<Player> signInManager,
+            Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
         {
             this.authenticationOptions = authenticationOptions.Value;
             this.signInManager = signInManager;
@@ -89,13 +96,19 @@ namespace TBoard.WebApi.Controllers
             {
                 playerRole = "user";
             }
+            var folderName = Path.Combine("ProfileImage");
+            var dbPath = Path.Combine(folderName,player.ProfileImage);
+
+
             var user = new Player
             {
                 Name = player.Name,
                 Surname = player.Surname,
                 UserName = player.UserName,
-                Email = player.Email
+                Email = player.Email,
+                ProfileImage = dbPath
             };
+
             try
             {
                 var result = await userManager.CreateAsync(user, player.Password);
@@ -133,7 +146,42 @@ namespace TBoard.WebApi.Controllers
             return Ok(result);
 
         }
+        [AllowAnonymous]
+        [HttpPost("uploadImage"),DisableRequestSizeLimit]
+        public IActionResult UploadImage()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("wwwroot","ProfileImage");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
 
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+
+        }
     }
+
 }
+

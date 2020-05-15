@@ -85,6 +85,7 @@ namespace TBoard.WebApi
             app.UseSwagger();
             app.UseRouting();
 
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 
