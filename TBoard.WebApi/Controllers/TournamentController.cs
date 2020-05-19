@@ -1,14 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TBoard.Dto;
-using TBoard.Entities;
-using TBoard.WebApi.ResourceParameters;
 using TBoard.WebApi.Services.Implementation;
 
 namespace TBoard.WebApi.Controllers
@@ -24,9 +18,9 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<object>> GetAll([FromQuery]TournamentResourceParameters tournamentResourceParameters)
+        public ActionResult<IEnumerable<object>> GetAll()
         {
-            return Ok(tournamentService.GetTournamentWithWinner(tournamentResourceParameters));
+            return Ok(tournamentService.GetTournamentWithWinner());
         }
 
         [HttpGet("winned")]

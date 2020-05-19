@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
-using TBoard.WebApi.ResourceParameters;
 
 namespace TBoard.WebApi.Repositories.Implementation
 {
@@ -13,12 +11,9 @@ namespace TBoard.WebApi.Repositories.Implementation
     {
         protected readonly TournamentContext tournamentContext;
 
-        protected DbSet<Tournament> tournamentTable;
-
-        public TournamentRepository(TournamentContext context)
+        public TournamentRepository(TournamentContext tournamentContext)
         {
-            tournamentContext = context;
-            tournamentTable = context.Set<Tournament>();
+            this.tournamentContext = tournamentContext;
         }
 
         public Tournament Add(Tournament entity)
@@ -29,34 +24,21 @@ namespace TBoard.WebApi.Repositories.Implementation
 
         public void DeleteById(int id)
         {
-            Tournament existing = tournamentTable.Find(id);
-            tournamentTable.Remove(existing);
+            Tournament existing = tournamentContext.Tournaments.Find(id);
+            tournamentContext.Tournaments.Remove(existing);
         }
 
-        public bool Exists(int id)
-        {
-            if (tournamentTable.Find(id) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public IEnumerable<Tournament> GetAll()
         {
-            return tournamentTable;
+            return tournamentContext.Tournaments;
         }
-
 
         public Tournament GetById(int id)
         {
-            var tournament = tournamentTable
-                .Include(tournament => tournament.Game)
-                .ThenInclude(game => game.PlayerGame)
+            var tournament = tournamentContext.Tournaments
+                .Include(tournament => tournament.Games)
+                .ThenInclude(game => game.PlayerGames)
                 .FirstOrDefault(x => x.Id == id);
-
             return tournament;
         }
 

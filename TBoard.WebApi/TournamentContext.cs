@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
 using TBoard.WebApi.Schemas;
@@ -23,10 +17,10 @@ namespace TBoard.WebApi
         {
         }
 
-        public virtual DbSet<Game> Game { get; set; }
-        public virtual DbSet<Player> Player { get; set; }
-        public virtual DbSet<PlayerGame> PlayerGame { get; set; }
-        public virtual DbSet<Tournament> Tournament { get; set; }
+        public virtual DbSet<Game> Games { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<PlayerGame> PlayerGames { get; set; }
+        public virtual DbSet<Tournament> Tournaments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +29,7 @@ namespace TBoard.WebApi
             {
 
                 entity.HasOne(d => d.Tournament)
-                    .WithMany(p => p.Game)
+                    .WithMany(p => p.Games)
                     .HasForeignKey(d => d.TournamentId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
@@ -60,13 +54,13 @@ namespace TBoard.WebApi
             {
                 entity.ToTable("Player_Game");
 
-                entity.HasOne(d => d.Game)
-                    .WithMany(p => p.PlayerGame)
+                entity.HasOne(d => d.Games)
+                    .WithMany(p => p.PlayerGames)
                     .HasForeignKey(d => d.GameId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(d => d.Player)
-                    .WithMany(p => p.PlayerGame)
+                entity.HasOne(d => d.Players)
+                    .WithMany(p => p.PlayerGames)
                     .HasForeignKey(d => d.PlayerId)
                     .OnDelete(DeleteBehavior.SetNull);
             });

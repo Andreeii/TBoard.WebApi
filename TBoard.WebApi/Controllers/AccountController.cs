@@ -17,11 +17,8 @@ using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 using System.Linq;
 using Microsoft.AspNet.Identity;
-using System.Net.Http;
 using System.IO;
-using System.Net.Mime;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -47,40 +44,36 @@ namespace TBoard.WebApi.Controllers
         public async Task<IActionResult> Login(PlayerForLoginDto userForLoginDto)
         {
             var user = await userManager.FindByNameAsync(userForLoginDto.UserName);
-            try
+
+            var checkingPasswordResult = await signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
+
+            if (checkingPasswordResult.Succeeded)
             {
-                var checkingPasswordResult = await signInManager.PasswordSignInAsync(userForLoginDto.UserName, userForLoginDto.Password, false, false);
-
-                if (checkingPasswordResult.Succeeded)
-                {
-                    var role = await userManager.GetRolesAsync(user);
-                    IdentityOptions options = new IdentityOptions();
-
-                    var signinCredentials = new SigningCredentials(authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
-                    var jwtSecurityToken = new JwtSecurityToken(
-                         issuer: authenticationOptions.Issuer,
-                         audience: authenticationOptions.Audience,
-                         claims: new List<Claim>()
-                         {
-                             new Claim(options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault()),
-                             new Claim(options.ClaimsIdentity.UserIdClaimType,user.Id.ToString())
-                         },
-                         expires: DateTime.Now.AddDays(30),
-                         signingCredentials: signinCredentials
-                    );
-
-                    var tokenHandler = new JwtSecurityTokenHandler();
-
-                    var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
-
-                    return Ok(new { AccessToken = encodedToken });
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                var encodedToken = CreateJwtSecurityToken(user).Result;
+                return Ok(new { AccessToken = encodedToken });
             }
             return Unauthorized();
+        }
+
+        private async Task<string> CreateJwtSecurityToken(Player user)
+        {
+            var role = await userManager.GetRolesAsync(user);
+            IdentityOptions options = new IdentityOptions();
+            var signinCredentials = new SigningCredentials(authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
+            var jwtSecurityToken = new JwtSecurityToken(
+                 issuer: authenticationOptions.Issuer,
+                 audience: authenticationOptions.Audience,
+                 claims: new List<Claim>()
+                 {
+                         new Claim(options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault()),
+                         new Claim(options.ClaimsIdentity.UserIdClaimType,user.Id.ToString())
+                 },
+                 expires: DateTime.Now.AddDays(30),
+                 signingCredentials: signinCredentials
+            );
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
+            return encodedToken;
         }
 
         [AllowAnonymous]
@@ -97,7 +90,7 @@ namespace TBoard.WebApi.Controllers
                 playerRole = "user";
             }
             var folderName = Path.Combine("ProfileImage");
-            var dbPath = Path.Combine(folderName,player.ProfileImage);
+            var dbPath = Path.Combine(folderName, player.ProfileImage);
 
 
             var user = new Player
@@ -147,13 +140,13 @@ namespace TBoard.WebApi.Controllers
 
         }
         [AllowAnonymous]
-        [HttpPost("uploadImage"),DisableRequestSizeLimit]
+        [HttpPost("uploadImage"), DisableRequestSizeLimit]
         public IActionResult UploadImage()
         {
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("wwwroot","ProfileImage");
+                var folderName = Path.Combine("wwwroot", "ProfileImage");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (file.Length > 0)

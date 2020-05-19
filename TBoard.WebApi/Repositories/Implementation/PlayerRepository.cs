@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using TBoard.Entities.Auth;
 using TBoard.Infrastructure.Models;
 using TBoard.WebApi.Extensions;
 using TBoard.WebApi.Repositories.Interfaces;
-using TBoard.WebApi.ResourceParameters;
 
 namespace TBoard.WebApi.Repositories.Implementation
 {
@@ -19,57 +17,37 @@ namespace TBoard.WebApi.Repositories.Implementation
         protected readonly TournamentContext tournamentContext;
         private readonly IMapper mapper;
 
-
-        protected DbSet<Player> playerTable;
-        protected DbSet<Role> rolesTable;
-
         public PlayerRepository(TournamentContext context,IMapper mapper)
         {
             tournamentContext = context;
-            playerTable = context.Set<Player>();
-            rolesTable = context.Set<Role>();
             this.mapper = mapper;
         }
 
         public Player DeleteById(int id)
         {
-            Player existing = playerTable.Find(id);
+            Player existing = tournamentContext.Players.Find(id);
 
-            var player = playerTable
-             .Include(player => player.PlayerGame)
+            var player = tournamentContext.Players
+             .Include(player => player.PlayerGames)
              .FirstOrDefault(x => x.Id == id);
 
-            if(player.PlayerGame.Count == 0 )
+            if(player.PlayerGames.Count == 0 )
             {
-            playerTable.Remove(existing);
+            tournamentContext.Players.Remove(existing);
             }
             return existing;
         }
 
-        public IQueryable<Player> GetAll()
-        {
-            return playerTable;
-        }
-
         public IEnumerable<Role> GetAllRoles()
         {
-            return rolesTable;
+            return tournamentContext.Roles;
         }
 
-        public IEnumerable<Player> GetAll(PlayerResourceParameters playerResourceParameters)
+        public IQueryable<Player> GetAll()
         {
-            var collection = tournamentContext.Player as IQueryable<Player>;
-            if (playerResourceParameters == null)
-            {
-                return GetAll();
-            }
-            else if (!string.IsNullOrWhiteSpace(playerResourceParameters.SearchQuery))
-            {
-                var searchQuery = playerResourceParameters.SearchQuery.Trim();
-                collection = collection
-                    .Where(a => a.UserName.Contains(searchQuery));
-            }
-            return collection.ToList();
+
+            var allPlayers = tournamentContext.Players;
+            return allPlayers;
         }
 
         public async Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
@@ -79,13 +57,13 @@ namespace TBoard.WebApi.Repositories.Implementation
         }
         public Player GetById(int id)
         {
-            return playerTable.Find(id);
+            return tournamentContext.Players.Find(id);
         }
 
 
         public bool CheckUserName(string userName)
         {
-            foreach (var item in playerTable)
+            foreach (var item in tournamentContext.Players)
             {
                 if(item.UserName == userName)
                 {

@@ -1,16 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
 using TBoard.Infrastructure.Models;
 using TBoard.WebApi.Repositories.Interfaces;
-using TBoard.WebApi.ResourceParameters;
 using TBoard.WebApi.Services.Interfaces;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 
@@ -33,9 +30,9 @@ namespace TBoard.WebApi.Controllers
 
         [HttpGet()]
         [HttpHead]
-        public ActionResult<IEnumerable<PlayerDto>> GetAll([FromQuery]PlayerResourceParameters playerResourceParameters)
+        public ActionResult<IEnumerable<PlayerDto>> GetAll()
         {
-            return Ok(playerService.GetAll(playerResourceParameters));
+            return Ok(playerService.GetAll());
         }
 
         [HttpGet("byId")]

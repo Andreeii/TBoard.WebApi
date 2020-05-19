@@ -11,6 +11,6 @@ namespace TBoard.Dto
     {
         public int Id { get; set; }
         public int TournamentId { get; set; }
-        public ICollection<PlayerGameDto> PlayerGame{ get; set; }
+        public ICollection<PlayerGameDto> PlayerGames{ get; set; }
     }
 }

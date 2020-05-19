@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TBoard.Dto;
-using TBoard.Entities;
-using TBoard.WebApi.ResourceParameters;
+﻿using TBoard.Dto;
 
 namespace TBoard.WebApi.Services.Implementation
 {
@@ -14,7 +8,7 @@ namespace TBoard.WebApi.Services.Implementation
         public TournamentDto GetById(int id);
         public void DeleteById(int id);
         public TournamentDto AddTournament(TournamentDto entity);
-        public object GetTournamentWithWinner(TournamentResourceParameters tournamentResourceParameters);
+        public object GetTournamentWithWinner();
         public TournamentDto Update(TournamentDto entity);
         public object GetWinnedTournaments(int playerId);
 

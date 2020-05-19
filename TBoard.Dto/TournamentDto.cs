@@ -9,7 +9,7 @@ namespace TBoard.Dto
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<GameDto> Game { get; set; }
+        public ICollection<GameDto> Games { get; set; }
         public DateTime CreationDate { get; set; }
 
     }
