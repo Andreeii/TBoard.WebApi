@@ -52,11 +52,19 @@ namespace TBoard.WebApi.Controllers
         [HttpDelete("{playerId}")]
         public ActionResult<Player> DeleteById(int playerId)
         {
-            return Ok(playerService.DeleteById(playerId));
+            try
+            {
+                return Ok(playerService.DeleteById(playerId));
+            }
+            catch
+            {
+                return StatusCode(400, "This player can't be deleted because he is engaged in another tournament !");
+            }
+
         }
 
         [HttpPost("checkUserName")]
-        public ActionResult<bool>CheckUserName(string checkUserName)
+        public ActionResult<bool> CheckUserName(string checkUserName)
         {
             return Ok(playerRepository.CheckUserName(checkUserName));
         }
@@ -70,7 +78,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost("paginatedSearch")]
-        public async Task<IActionResult> GetPagedBooks([FromBody]PagedRequest pagedRequest)
+        public async Task<IActionResult> GetPagedPlayers([FromBody]PagedRequest pagedRequest)
         {
             var pagedPlayerDto = await playerRepository.GetPagedData<Player, PlayerDto>(pagedRequest);
             return Ok(pagedPlayerDto);

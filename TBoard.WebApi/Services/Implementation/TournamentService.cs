@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
@@ -38,21 +40,49 @@ namespace TBoard.WebApi.Services.Implementation
                          Wins = x.Count()
 
                      });
+
             var q4 = playerGameRepository.GetAll()
                      .Where(x => x.IsWinner == true)
                      .GroupBy(x => new { x.PlayerId, x.Games.TournamentId, x.Games.Tournament.Name, x.Players.UserName })
                      .Select(x => new
                      {
-                         PlayerId = x.Key.PlayerId,
+                         //PlayerId = x.Key.PlayerId,
                          TournamentId = x.Key.TournamentId,
                          NumberOfWins = x.Count(),
                          WinnerName = x.Key.UserName,
                          TournamentName = x.Key.Name
 
                      })
-                     .Where(x => x.NumberOfWins == q3.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins));
+                     .Where(x => x.NumberOfWins == q3.Where(y => y.TournamentId == x.TournamentId).Max(y => y.Wins))
+                     .OrderBy(x => x.TournamentId);
 
             return q4.ToList();
+        }
+
+
+        public IList<int> GetProgress()
+        {
+            IList<int> progresList = new List<int>();
+            var q5 = playerGameRepository.GetAll()
+                .GroupBy(x => x.Games.TournamentId)
+                .Select(x => x.Count())
+                .ToList();
+
+            var q6 = playerGameRepository.GetAll()
+                .Where(x => x.IsWinner == true)
+                .GroupBy(x => x.Games.TournamentId)
+                .Select(x => x.Count())
+                .ToList();
+
+            for (int i = 0; i < q5.Count; i++)
+            {
+                //var total = q5[i] / 2;
+                //var played = q6[i];
+                var res = (int)((double)q6[i] / (q5[i] / 2) * 100);
+                progresList.Add(res);
+            }
+            return progresList;
+
         }
 
         public object GetWinnedTournaments(int playerId)

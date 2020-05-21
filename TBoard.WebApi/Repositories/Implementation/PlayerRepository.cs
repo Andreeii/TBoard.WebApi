@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,12 +29,17 @@ namespace TBoard.WebApi.Repositories.Implementation
             Player existing = tournamentContext.Players.Find(id);
 
             var player = tournamentContext.Players
+             .Where(p => p.Id == id)
              .Include(player => player.PlayerGames)
-             .FirstOrDefault(x => x.Id == id);
+             .FirstOrDefault();
 
             if(player.PlayerGames.Count == 0 )
             {
             tournamentContext.Players.Remove(existing);
+            }
+            else
+            {
+                throw  new Exception();
             }
             return existing;
         }

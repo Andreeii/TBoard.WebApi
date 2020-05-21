@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.WebApi.Services.Implementation;
 
@@ -59,6 +61,15 @@ namespace TBoard.WebApi.Controllers
         public ActionResult<TournamentDto> UpdateTournament(TournamentDto tournament)
         {
             return Ok(tournamentService.Update(tournament));
+        }
+
+
+        [HttpGet("progress")]
+        [AllowAnonymous]
+        public IActionResult GetProgress()
+        {
+          return  Ok( tournamentService.GetProgress());
+
         }
 
     }
