@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.WebApi.Repositories.Interfaces;
@@ -28,7 +27,7 @@ namespace TBoard.WebApi.Services.Implementation
             tournamentRepository.DeleteById(id);
             tournamentRepository.SaveChanges();
         }
-        public object GetTournamentWithWinner()
+        public ICollection<TournamentWinnerDto> GetTournamentWithWinner()
         {
             var q3 = playerGameRepository.GetAll()
                      .Where(x => x.IsWinner == true)
@@ -44,7 +43,7 @@ namespace TBoard.WebApi.Services.Implementation
             var q4 = playerGameRepository.GetAll()
                      .Where(x => x.IsWinner == true)
                      .GroupBy(x => new { x.PlayerId, x.Games.TournamentId, x.Games.Tournament.Name, x.Players.UserName })
-                     .Select(x => new
+                     .Select(x => new TournamentWinnerDto
                      {
                          //PlayerId = x.Key.PlayerId,
                          TournamentId = x.Key.TournamentId,

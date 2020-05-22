@@ -30,9 +30,9 @@ namespace TBoard.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddDbContext<TournamentContext>(options => 
+            services.AddDbContext<TournamentContext>(options =>
                 {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 });
 
             services.AddIdentity<Player, Role>(options =>
@@ -56,7 +56,8 @@ namespace TBoard.WebApi
             services.AddScoped(typeof(IPlayerRepository), typeof(PlayerRepository));
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<IPlayerService, PlayerService>();
-            services.AddSwaggerGen(setupAction => {
+            services.AddSwaggerGen(setupAction =>
+            {
                 setupAction.SwaggerDoc("TournamentOpenAPISpecification",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
@@ -64,6 +65,16 @@ namespace TBoard.WebApi
                         Version = "1"
                     });
             });
+
+            services.AddAuthentication()
+                    .AddGoogle(options =>
+                    {
+                        IConfigurationSection googleAuthNSection =
+                        Configuration.GetSection("GoogleAuth");
+
+                        options.ClientId = googleAuthNSection["ClientId"];
+                        options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    });
 
         }
 

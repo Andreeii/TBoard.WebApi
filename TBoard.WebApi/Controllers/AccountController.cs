@@ -119,11 +119,14 @@ namespace TBoard.WebApi.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
+            var folderName = Path.Combine("ProfileImage");
+            var dbPath = Path.Combine(folderName, player.ProfileImage);
 
             user.Name = player.Name;
             user.Surname = player.Surname;
             user.UserName = player.UserName;
             user.Email = player.Email;
+            user.ProfileImage = dbPath;
 
             var result = await userManager.UpdateAsync(user);
             return Ok(result);
