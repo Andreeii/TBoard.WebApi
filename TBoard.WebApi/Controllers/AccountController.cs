@@ -89,8 +89,7 @@ namespace TBoard.WebApi.Controllers
             {
                 playerRole = "user";
             }
-            var folderName = Path.Combine("ProfileImage");
-            var dbPath = Path.Combine(folderName, player.ProfileImage);
+            var dbPath = player.ProfileImage;
 
 
             var user = new Player
@@ -119,8 +118,8 @@ namespace TBoard.WebApi.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
-            var folderName = Path.Combine("ProfileImage");
-            var dbPath = Path.Combine(folderName, player.ProfileImage);
+            //var folderName = Path.Combine("ProfileImage");
+            var dbPath = player.ProfileImage;
 
             user.Name = player.Name;
             user.Surname = player.Surname;

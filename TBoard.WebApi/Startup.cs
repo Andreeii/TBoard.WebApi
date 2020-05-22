@@ -66,15 +66,15 @@ namespace TBoard.WebApi
                     });
             });
 
-            services.AddAuthentication()
-                    .AddGoogle(options =>
-                    {
-                        IConfigurationSection googleAuthNSection =
-                        Configuration.GetSection("GoogleAuth");
+            //services.AddAuthentication()
+            //        .AddGoogle(options =>
+            //        {
+            //            IConfigurationSection googleAuthNSection =
+            //            Configuration.GetSection("GoogleAuth");
 
-                        options.ClientId = googleAuthNSection["ClientId"];
-                        options.ClientSecret = googleAuthNSection["ClientSecret"];
-                    });
+            //            options.ClientId = googleAuthNSection["ClientId"];
+            //            options.ClientSecret = googleAuthNSection["ClientSecret"];
+            //        });
 
         }
 
