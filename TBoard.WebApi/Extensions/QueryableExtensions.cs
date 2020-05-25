@@ -2,13 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
-using TBoard.Entities;
 using TBoard.Infrastructure.Models;
 
 namespace TBoard.WebApi.Extensions

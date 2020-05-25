@@ -21,11 +21,7 @@ namespace TBoard.WebApi.Extensions
                     var context = services.GetRequiredService<TournamentContext>();
                     var userManager = services.GetRequiredService<UserManager<Player>>();
                     context.Database.Migrate();
-
-                    //await Seed.SeedPlayers(userManager);
-                    //await Seed.SeedTournaments(context);
                     await Seed.SeedRoles(context);
-
                 }
                 catch (Exception ex)
                 {

@@ -19,17 +19,17 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<object>> GetAll()
+        public ActionResult<IEnumerable<TournamentWinnerDto>> GetTournamentWithWinner()
         {
             return Ok(tournamentService.GetTournamentWithWinner());
         }
 
-        [HttpGet("winned")]
+        [HttpGet("participationTournaments")]
         public ActionResult<IEnumerable<object>> GetWinnedTournaments()
         {
             var playerId = User.Identity.GetUserId();
 
-            return Ok(tournamentService.GetWinnedTournaments(Int32.Parse(playerId)));
+            return Ok(tournamentService.GetPlayerTournaments(Int32.Parse(playerId)));
         }
 
         [HttpGet("{tournamentId}")]
@@ -43,6 +43,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpDelete("{tournamentId}")]
+        [Authorize("admin")]
         public ActionResult<int> DeleteById(int tournamentId)
         {
           tournamentService.DeleteById(tournamentId);
@@ -64,7 +65,6 @@ namespace TBoard.WebApi.Controllers
 
 
         [HttpGet("progress")]
-        [AllowAnonymous]
         public IActionResult GetProgress()
         {
           return  Ok( tournamentService.GetProgress());

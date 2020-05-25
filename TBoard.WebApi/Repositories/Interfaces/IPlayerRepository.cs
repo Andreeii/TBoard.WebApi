@@ -20,8 +20,6 @@ namespace TBoard.WebApi.Repositories.Interfaces
 
         Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : IdentityUser<int>
                                                                                            where TDto : class;
-        public bool CheckUserName(string userName);
-
         void SaveChanges();
     }
 }

@@ -35,7 +35,7 @@ namespace TBoard.WebApi.Controllers
             return Ok(playerService.GetAll());
         }
 
-        [HttpGet("byId")]
+        [HttpGet("playerAccount")]
         public ActionResult<PlayerForUpdateDto> GetById()
         {
             var playerId = User.Identity.GetUserId();
@@ -61,12 +61,6 @@ namespace TBoard.WebApi.Controllers
                 return StatusCode(400, "This player can't be deleted because he is engaged in another tournament !");
             }
 
-        }
-
-        [HttpPost("checkUserName")]
-        public ActionResult<bool> CheckUserName(string checkUserName)
-        {
-            return Ok(playerRepository.CheckUserName(checkUserName));
         }
 
 

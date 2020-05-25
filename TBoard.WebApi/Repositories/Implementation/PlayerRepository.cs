@@ -66,20 +66,6 @@ namespace TBoard.WebApi.Repositories.Implementation
             return tournamentContext.Players.Find(id);
         }
 
-
-        public bool CheckUserName(string userName)
-        {
-            foreach (var item in tournamentContext.Players)
-            {
-                if(item.UserName == userName)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public void SaveChanges()
         {
             tournamentContext.SaveChanges();

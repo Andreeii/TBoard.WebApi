@@ -11,7 +11,7 @@ namespace TBoard.WebApi.Services.Implementation
         public TournamentDto AddTournament(TournamentDto entity);
         public ICollection<TournamentWinnerDto> GetTournamentWithWinner();
         public TournamentDto Update(TournamentDto entity);
-        public object GetWinnedTournaments(int playerId);
+        public ICollection<TournamentsParticipation> GetPlayerTournaments(int playerId);
 
         public IList<int> GetProgress();
 

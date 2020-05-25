@@ -45,7 +45,6 @@ namespace TBoard.WebApi.Services.Implementation
                      .GroupBy(x => new { x.PlayerId, x.Games.TournamentId, x.Games.Tournament.Name, x.Players.UserName })
                      .Select(x => new TournamentWinnerDto
                      {
-                         //PlayerId = x.Key.PlayerId,
                          TournamentId = x.Key.TournamentId,
                          NumberOfWins = x.Count(),
                          WinnerName = x.Key.UserName,
@@ -75,22 +74,22 @@ namespace TBoard.WebApi.Services.Implementation
 
             for (int i = 0; i < q5.Count; i++)
             {
-                //var total = q5[i] / 2;
-                //var played = q6[i];
-                var res = (int)((double)q6[i] / (q5[i] / 2) * 100);
-                progresList.Add(res);
+                var total = q5[i] / 2;
+                var played = q6[i];
+                var result = (int)((double)played / total * 100);
+                progresList.Add(result);
             }
             return progresList;
 
         }
 
-        public object GetWinnedTournaments(int playerId)
+        public ICollection<TournamentsParticipation> GetPlayerTournaments(int playerId)
         {
             var q1 = playerGameRepository.GetAll()
                     .Where(x => x.IsWinner == true)
                     .Where(x => x.PlayerId == playerId)
                     .GroupBy(x => new { x.PlayerId, x.Games.Tournament.Id, x.Games.Tournament.Name })
-                    .Select(x => new
+                    .Select(x => new TournamentsParticipation
                     {
                         TournamentId = x.Key.Id,
                         TournamentName = x.Key.Name,

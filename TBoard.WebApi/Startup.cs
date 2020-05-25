@@ -66,16 +66,6 @@ namespace TBoard.WebApi
                     });
             });
 
-            //services.AddAuthentication()
-            //        .AddGoogle(options =>
-            //        {
-            //            IConfigurationSection googleAuthNSection =
-            //            Configuration.GetSection("GoogleAuth");
-
-            //            options.ClientId = googleAuthNSection["ClientId"];
-            //            options.ClientSecret = googleAuthNSection["ClientSecret"];
-            //        });
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

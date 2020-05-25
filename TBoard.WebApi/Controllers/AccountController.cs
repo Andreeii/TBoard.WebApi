@@ -113,12 +113,11 @@ namespace TBoard.WebApi.Controllers
             }
         }
 
-        [HttpPost("edit")]
+        [HttpPost("editPlayer")]
         public async Task<IActionResult> EditPlayer(PlayerForUpdateDto player)
         {
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
-            //var folderName = Path.Combine("ProfileImage");
             var dbPath = player.ProfileImage;
 
             user.Name = player.Name;
