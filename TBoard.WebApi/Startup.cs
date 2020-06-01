@@ -50,6 +50,14 @@ namespace TBoard.WebApi
                 options.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters();
 
+            //policy based role authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole",
+                     policy => policy.RequireRole("admin"));
+                options.AddPolicy("RequireUserRole",
+                   policy => policy.RequireRole("user"));
+            });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(ITournamentRepository), typeof(TournamentRepository));

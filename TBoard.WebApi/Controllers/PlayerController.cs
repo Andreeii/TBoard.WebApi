@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ namespace TBoard.WebApi.Controllers
             return Ok(playerService.GetById(playerId));
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{playerId}")]
         public ActionResult<Player> DeleteById(int playerId)
         {
