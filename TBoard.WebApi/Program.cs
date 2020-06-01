@@ -27,7 +27,7 @@ namespace TBoard.WebApi
                         logging.AddDebug();
                         logging.AddEventSourceLogger();
                     })
-                    .UseUrls("http://localhost:1010");
+                    .UseUrls("http://localhost:60907");
                 });
     }
 }

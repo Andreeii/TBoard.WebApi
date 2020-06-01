@@ -42,8 +42,8 @@ namespace TBoard.WebApi.Controllers
             return Ok(tournamentService.GetById(tournamentId));
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{tournamentId}")]
-        [Authorize("admin")]
         public ActionResult<int> DeleteById(int tournamentId)
         {
           tournamentService.DeleteById(tournamentId);
