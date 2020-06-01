@@ -43,7 +43,6 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpDelete("{tournamentId}")]
-        [Authorize("admin")]
         public ActionResult<int> DeleteById(int tournamentId)
         {
           tournamentService.DeleteById(tournamentId);
