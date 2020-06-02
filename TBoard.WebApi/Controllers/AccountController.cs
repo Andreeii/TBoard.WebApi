@@ -89,7 +89,7 @@ namespace TBoard.WebApi.Controllers
             {
                 playerRole = "user";
             }
-            var dbPath = player.ProfileImage;
+            var dbPath = "http://localhost:60907/ProfileImage/" + player.ProfileImage;
 
 
             var user = new Player
@@ -118,7 +118,7 @@ namespace TBoard.WebApi.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = await userManager.FindByIdAsync(userId);
-            var dbPath = player.ProfileImage;
+            var dbPath = "http://localhost:60907/ProfileImage/" + player.ProfileImage;
 
             user.Name = player.Name;
             user.Surname = player.Surname;

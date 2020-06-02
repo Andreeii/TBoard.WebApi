@@ -19,7 +19,6 @@
     },
     "TBoard.WebApi": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/player",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
