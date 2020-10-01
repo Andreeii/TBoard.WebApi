@@ -1,7 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +33,10 @@ namespace TBoard.WebApi
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(corsOptions =>
+            {
+                corsOptions.AddPolicy("fully permissive", configurePolicy => configurePolicy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200").AllowCredentials()); //localhost:4200 is the default port an angular runs in dev mode with ng serve
+            });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<TournamentContext>(options =>
                 {
@@ -42,6 +50,25 @@ namespace TBoard.WebApi
            .AddUserManager<UserManager<Player>>()
            .AddEntityFrameworkStores<TournamentContext>();
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
+            })
+           .AddGoogle("Google", options =>
+           {
+               options.CallbackPath = new PathString("/signin-google");
+               options.ClientId = "435504687783-jmg1heitefdgadc0r9svk92itrgi4581.apps.googleusercontent.com";
+               options.ClientSecret = "FrShXIuIIIutXB0x2tloU4Lf";
+               options.Events = new OAuthEvents
+               {
+                   OnRemoteFailure = (RemoteFailureContext context) =>
+                   {
+                       context.Response.Redirect("/account/denied");
+                       context.HandleResponse();
+                       return Task.CompletedTask;
+                   }
+               };
+           });
             var authOptions = services.ConfigureAuthOptions(Configuration);
             services.AddJwtAuthentication(authOptions);
             services.AddControllers(options =>
@@ -94,7 +121,7 @@ namespace TBoard.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("fully permissive");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

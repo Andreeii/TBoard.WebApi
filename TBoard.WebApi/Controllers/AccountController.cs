@@ -19,6 +19,7 @@ using System.Linq;
 using Microsoft.AspNet.Identity;
 using System.IO;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -38,6 +39,56 @@ namespace TBoard.WebApi.Controllers
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
+
+        [Route("/[action]")]
+        public IActionResult Denied()
+        {
+            return Content("You need to allow this application access in Google order to be able to login");
+        }
+
+        [AllowAnonymous]
+        [Route("googleLogin")]
+        public IActionResult SignInWithGoogle()
+        {
+            var authenticationProperties = signInManager.ConfigureExternalAuthenticationProperties("Google", Url.Action(nameof(HandleExternalLogin)));
+            return Challenge(authenticationProperties, "Google");
+        }
+
+        public async Task<IActionResult> HandleExternalLogin()
+        {
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+
+            if (!result.Succeeded)
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var newUser = new Player
+                {
+                    UserName = email,
+                    Email = email,
+                    EmailConfirmed = true
+                };
+                var createResult = await userManager.CreateAsync(newUser);
+                if (!createResult.Succeeded)
+                    throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
+
+                await userManager.AddLoginAsync(newUser, info);
+                var newUserClaims = info.Principal.Claims.Append(new Claim("userId", newUser.Id.ToString()));
+                await userManager.AddClaimsAsync(newUser, newUserClaims);
+                await signInManager.SignInAsync(newUser, isPersistent: false);
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            }
+
+            return Redirect("http://localhost:4200");
+        }
+
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return Redirect("http://localhost:4200");
+        }
+
 
         [AllowAnonymous]
         [HttpPost("login")]
