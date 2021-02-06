@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,10 +79,21 @@ namespace TBoard.WebApi
             {
                 app.UseMiddleware<ErrorHandlingMiddleware>();
             }
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if(context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
             app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseRouting();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
