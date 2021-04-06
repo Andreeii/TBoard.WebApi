@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpGet("participationTournaments")]
-        public ActionResult<IEnumerable<object>> GetWinnedTournaments()
+        public ActionResult<IEnumerable<object>> GetWinedTournaments()
         {
             var playerId = User.Identity.GetUserId();
 
