@@ -11,14 +11,12 @@ using TBoard.WebApi.Repositories.Interfaces;
 using TBoard.WebApi.Services.Interfaces;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
 
-
 namespace TBoard.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class PlayerController : ControllerBase
     {
-
         private readonly IPlayerService playerService;
         private readonly IPlayerRepository playerRepository;
 
@@ -32,16 +30,17 @@ namespace TBoard.WebApi.Controllers
         [HttpHead]
         public ActionResult<IEnumerable<PlayerDto>> GetAll()
         {
-            return Ok(playerService.GetAll());
+            var players = playerService.GetAll();
+            return Ok(players);
         }
 
         [HttpGet("playerAccount")]
         public ActionResult<PlayerForUpdateDto> GetById()
         {
             var playerId = User.Identity.GetUserId();
-            return Ok(playerService.GetById(Int32.Parse(playerId)));
+            var player = playerService.GetById(Int32.Parse(playerId));
+            return Ok(player);
         }
-
 
         [HttpGet("{playerId}")]
         public ActionResult<PlayerForUpdateDto> GetPlayerById(int playerId)
@@ -54,15 +53,14 @@ namespace TBoard.WebApi.Controllers
         {
             try
             {
-                return Ok(playerService.DeleteById(playerId));
+                Player player = playerService.DeleteById(playerId);
+                return Ok(player);
             }
             catch
             {
                 return StatusCode(400, "This player can't be deleted because he is engaged in another tournament !");
             }
-
         }
-
 
         [AllowAnonymous]
         [HttpGet("roles")]
@@ -72,11 +70,10 @@ namespace TBoard.WebApi.Controllers
         }
 
         [HttpPost("paginatedSearch")]
-        public async Task<IActionResult> GetPagedPlayers([FromBody]PagedRequest pagedRequest)
+        public async Task<IActionResult> GetPagedPlayers([FromBody] PagedRequest pagedRequest)
         {
             var pagedPlayerDto = await playerRepository.GetPagedData<Player, PlayerDto>(pagedRequest);
             return Ok(pagedPlayerDto);
         }
-
     }
 }

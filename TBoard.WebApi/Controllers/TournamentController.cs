@@ -12,6 +12,7 @@ namespace TBoard.WebApi.Controllers
     public class TournamentController : ControllerBase
     {
         private readonly ITournamentService tournamentService;
+
         public TournamentController(ITournamentService tournamentService)
         {
             this.tournamentService = tournamentService;
@@ -44,7 +45,7 @@ namespace TBoard.WebApi.Controllers
         [HttpDelete("{tournamentId}")]
         public ActionResult<int> DeleteById(int tournamentId)
         {
-          tournamentService.DeleteById(tournamentId);
+            tournamentService.DeleteById(tournamentId);
             return Ok(tournamentId);
         }
 
@@ -52,7 +53,6 @@ namespace TBoard.WebApi.Controllers
         public IActionResult Post(TournamentDto tournament)
         {
             return Ok(tournamentService.AddTournament(tournament));
-           
         }
 
         [HttpPut]
@@ -61,13 +61,10 @@ namespace TBoard.WebApi.Controllers
             return Ok(tournamentService.Update(tournament));
         }
 
-
         [HttpGet("progress")]
         public IActionResult GetProgress()
         {
-          return  Ok( tournamentService.GetProgress());
-
+            return Ok(tournamentService.GetProgress());
         }
-
     }
 }

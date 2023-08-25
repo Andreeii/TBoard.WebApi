@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -6,19 +7,18 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using TBoard.Dto;
 using TBoard.Entities;
 using TBoard.Infrastructure.Configurations;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
-using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using AllowAnonymousAttribute = Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute;
-using System.Linq;
-using Microsoft.AspNet.Identity;
-using System.IO;
-using System.Net.Http.Headers;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace TBoard.WebApi.Controllers
 {
@@ -28,14 +28,17 @@ namespace TBoard.WebApi.Controllers
     {
         private readonly AuthOptions authenticationOptions;
         private readonly SignInManager<Player> signInManager;
+        private readonly IHttpContextAccessor contextAccessor;
         private readonly Microsoft.AspNetCore.Identity.UserManager<Player> userManager;
 
         public AccountController(IOptions<AuthOptions> authenticationOptions,
             SignInManager<Player> signInManager,
+            IHttpContextAccessor contextAccessor,
             Microsoft.AspNetCore.Identity.UserManager<Player> userManager)
         {
             this.authenticationOptions = authenticationOptions.Value;
             this.signInManager = signInManager;
+            this.contextAccessor = contextAccessor;
             this.userManager = userManager;
         }
 
@@ -80,29 +83,19 @@ namespace TBoard.WebApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> CreatePlayer(PlayerForCreationDto player)
         {
-            string playerRole;
-            if (player.Role != null)
-            {
-                playerRole = player.Role;
-            }
-            else
-            {
-                playerRole = "user";
-            }
-            var dbPath = player.ProfileImage;
-
-
-            var user = new Player
-            {
-                Name = player.Name,
-                Surname = player.Surname,
-                UserName = player.UserName,
-                Email = player.Email,
-                ProfileImage = dbPath
-            };
-
             try
             {
+                string playerRole = player.Role != null ? player.Role : "user";
+                string dbPath = $"{contextAccessor.HttpContext.Request.Scheme}://{contextAccessor.HttpContext.Request.Host}/ProfileImage/{player.ProfileImage}";
+                var user = new Player
+                {
+                    Name = player.Name,
+                    Surname = player.Surname,
+                    UserName = player.UserName,
+                    Email = player.Email,
+                    ProfileImage = dbPath
+                };
+
                 var result = await userManager.CreateAsync(user, player.Password);
                 await userManager.AddToRoleAsync(user, playerRole);
                 return Ok(result);
@@ -128,7 +121,6 @@ namespace TBoard.WebApi.Controllers
 
             var result = await userManager.UpdateAsync(user);
             return Ok(result);
-
         }
 
         [HttpPost("changePassword")]
@@ -138,44 +130,36 @@ namespace TBoard.WebApi.Controllers
             var user = await userManager.FindByIdAsync(userId);
             var result = await userManager.ChangePasswordAsync(user, passwordDto.CurentPassword, passwordDto.NewPassword);
             return Ok(result);
-
         }
+
         [AllowAnonymous]
         [HttpPost("uploadImage"), DisableRequestSizeLimit]
         public IActionResult UploadImage()
         {
             try
             {
+                string termUrl = $"{contextAccessor.HttpContext.Request.Scheme}://{contextAccessor.HttpContext.Request.Host}";
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("wwwroot", "ProfileImage");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    return Ok(new { dbPath });
-                }
-                else
+                if (file.Length == 0)
                 {
                     return BadRequest();
                 }
 
+                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                using var stream = new FileStream(fullPath, FileMode.Create);
+                file.CopyTo(stream);
+
+                return Ok(new { dbPath });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
-
         }
     }
-
 }
-

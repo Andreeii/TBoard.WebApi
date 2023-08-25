@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
 using TBoard.Entities;
 using TBoard.Entities.Auth;
 using TBoard.Infrastructure.Middlewares;
@@ -28,6 +28,7 @@ namespace TBoard.WebApi
         }
 
         public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -50,7 +51,7 @@ namespace TBoard.WebApi
                 options.Filters.Add(new AuthorizeFilter());
                 options.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters();
-
+            services.AddHttpContextAccessor();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(ITournamentRepository), typeof(TournamentRepository));
@@ -60,13 +61,12 @@ namespace TBoard.WebApi
             services.AddSwaggerGen(setupAction =>
             {
                 setupAction.SwaggerDoc("TournamentOpenAPISpecification",
-                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    new OpenApiInfo()
                     {
                         Title = "TournamentApi",
                         Version = "1"
                     });
             });
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -80,15 +80,7 @@ namespace TBoard.WebApi
                 app.UseMiddleware<ErrorHandlingMiddleware>();
             }
 
-            app.Use(async (context, next) =>
-            {
-                await next();
-                if(context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
+            app.UseMiddleware<Middleware>();
             app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseRouting();
@@ -103,7 +95,6 @@ namespace TBoard.WebApi
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }
